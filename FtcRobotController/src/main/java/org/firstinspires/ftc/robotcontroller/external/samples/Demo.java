@@ -5,9 +5,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 /**
- * Created by aozdemir on 9/12/17.
+ * This OpMode can only drive forward and backwards.
+ *
+ * It is an example OpMode for the programming tutorial.
  */
-
 public class Demo extends OpMode {
 
     DcMotor frontLeftDrive;
@@ -27,9 +28,14 @@ public class Demo extends OpMode {
 
     @Override
     public void loop() {
-        frontLeftDrive.setPower(-gamepad1.left_stick_y);
-        frontRightDrive.setPower(gamepad1.left_stick_y);
-        backLeftDrive.setPower(-gamepad1.left_stick_y);
-        backRightDrive.setPower(gamepad1.left_stick_y);
+        // What speed to go forward at
+        double forward_speed = gamepad1.left_stick_y;
+
+        // Left motors run in opposite directions
+        frontLeftDrive.setPower(-forward_speed);
+        backLeftDrive.setPower(-forward_speed);
+
+        frontRightDrive.setPower(forward_speed);
+        backRightDrive.setPower(forward_speed);
     }
 }
