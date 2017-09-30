@@ -2,6 +2,7 @@ package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 /**
@@ -24,10 +25,12 @@ public class Demo extends OpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "backRight");
 
 
+
     }
 
     @Override
     public void loop() {
+
         // What speed to go forward at
         double forward_speed = gamepad1.left_stick_y;
 
@@ -37,5 +40,6 @@ public class Demo extends OpMode {
 
         frontRightDrive.setPower(forward_speed);
         backRightDrive.setPower(forward_speed);
+
     }
 }
