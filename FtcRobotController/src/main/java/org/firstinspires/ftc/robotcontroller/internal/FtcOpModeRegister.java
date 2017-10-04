@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
+import org.firstinspires.ftc.robotcontroller.external.samples.ConceptViewMarkAndColorImages;
 import org.firstinspires.ftc.robotcontroller.external.samples.Demo;
 
 /**
@@ -67,6 +68,7 @@ public class FtcOpModeRegister implements OpModeRegister {
 
 
         manager.register("Demo", Demo.class);
+        manager.register("Images", ConceptViewMarkAndColorImages.class);
 
         /**
          * Any manual OpMode class registrations should go here.
