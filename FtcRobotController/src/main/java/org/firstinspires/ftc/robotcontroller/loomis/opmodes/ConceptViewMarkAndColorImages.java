@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -59,36 +59,34 @@ public class ConceptViewMarkAndColorImages extends LinearOpMode {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 telemetry.addData("VuMark", "%s visible", vuMark);
+            } else {
+                telemetry.addData("VuMark", "not visible");
             }
 
 
             // Pull raw images
             VuforiaLocalizer.CloseableFrame frame;
 
-            boolean clear = false;
             while ((frame = frameQueue.poll()) != null) {
 
                 for (int i = 0; i < frame.getNumImages(); i++) {
                     Image img = frame.getImage(i);
-                    clear = true;
 
-                    if (img.getFormat() != PIXEL_FORMAT.GRAYSCALE) {
+                    if (img.getFormat() == PIXEL_FORMAT.GRAYSCALE) {
                         nGrayImages++;
                     } else {
                         nNotGrayImages++;
                     }
-                    telemetry.addLine("Format " + img.getFormat() + " height " + img.getHeight() + " width " + img.getWidth());
+                    RobotLog.v("Format %d, height %d, width %d", img.getFormat(), img.getHeight(), img.getWidth());
                 }
-
-                telemetry.addData("Grayscale count", nGrayImages);
-                telemetry.addData("Non-grayscale count", nNotGrayImages);
-
                 frame.close();
             }
 
+            telemetry.addData("Grayscale count", nGrayImages);
+            telemetry.addData("Non-grayscale count", nNotGrayImages);
+
             // Only reset the telemetry if new images arrived in the queue
-            if (clear)
-                telemetry.update();
+            telemetry.update();
         }
     }
 }

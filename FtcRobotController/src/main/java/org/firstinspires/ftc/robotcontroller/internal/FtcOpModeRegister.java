@@ -36,8 +36,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
-import org.firstinspires.ftc.robotcontroller.external.samples.ConceptViewMarkAndColorImages;
-import org.firstinspires.ftc.robotcontroller.external.samples.Demo;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Demo;
 
 /**
  * {@link FtcOpModeRegister} is responsible for registering opmodes for use in an FTC game.
@@ -68,7 +68,7 @@ public class FtcOpModeRegister implements OpModeRegister {
 
 
         manager.register("Demo", Demo.class);
-        manager.register("Images", ConceptViewMarkAndColorImages.class);
+        manager.register("Color Images", ConceptViewMarkAndColorImages.class);
 
         /**
          * Any manual OpMode class registrations should go here.
