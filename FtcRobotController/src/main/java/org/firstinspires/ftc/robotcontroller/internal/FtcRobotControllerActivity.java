@@ -108,6 +108,8 @@ import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
 import org.firstinspires.ftc.robotcore.internal.webserver.WebServer;
 import org.firstinspires.inspection.RcInspectionActivity;
+import org.opencv.android.OpenCVLoader;
+//import org.opencv.android.OpenCVLoader;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -115,6 +117,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @SuppressWarnings("WeakerAccess")
 public class FtcRobotControllerActivity extends Activity
   {
+
+      static {
+        RobotLog.v("LIBRARY SUCCESS LOADED SUCCESSFULLY %s",OpenCVLoader.initDebug());
+      }
+
   public static final String TAG = "RCActivity";
   public String getTag() { return TAG; }
 
