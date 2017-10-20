@@ -25,6 +25,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.concurrent.BlockingQueue;
 
 import static org.opencv.core.CvType.CV_8UC1;
+import static org.opencv.core.CvType.CV_8UC3;
 
 /**
  * Created by aozdemir.
@@ -46,7 +47,7 @@ public class DemoColorVision extends LinearOpMode {
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         // We ask Vuforia to also provide RGB888 images.
-        telemetry.addData("RGB888 images now available: ", Vuforia.setFrameFormat(PIXEL_FORMAT.RGBA8888, true));
+        telemetry.addData("RGB565 images now available: ", Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true));
         // We ask Vuforia to keep the last 10 images.
         vuforia.setFrameQueueCapacity(10);
 
@@ -85,19 +86,34 @@ public class DemoColorVision extends LinearOpMode {
                     Image img = frame.getImage(i);
 
                     if (img.getFormat() == PIXEL_FORMAT.GRAYSCALE) {
+                        telemetry.addLine("Continued");
+                        telemetry.update();
+                        nGrayImages++;
                         continue;
                     } else {
                         nNotGrayImages++;
-                        Mat image = new Mat(img.getBufferHeight(), img.getBufferWidth(), CV_8UC1);
-                        MatOfPoint3f copy = new MatOfPoint3f();
-                        Bitmap bitmap = Bitmap.createBitmap(img.getBufferHeight(), img.getBufferWidth(), Bitmap.Config.ARGB_8888);
+                        Mat image = new Mat(img.getBufferHeight(), img.getBufferWidth(), CV_8UC3);
+                        Mat copy = new Mat(img.getBufferHeight(), img.getBufferWidth(), CV_8UC1);
+                        MatOfPoint3f points = new MatOfPoint3f();
+                        Bitmap bitmap = Bitmap.createBitmap(img.getBufferHeight(), img.getBufferWidth(), Bitmap.Config.RGB_565);
                         bitmap.copyPixelsFromBuffer(img.getPixels());
-                        //Utils.bitmapToMat(bitmap, image);
-                        //Imgproc.HoughCircles(image,copy,Imgproc.CV_HOUGH_GRADIENT,1.0,10.0,100,100,40,100);
-                        //Point3[] points = copy.toArray();
-                       // telemetry.addData("Length of points is ", points.length);
-
-
+                        Utils.bitmapToMat(bitmap, image);
+                        Imgproc.cvtColor(image, copy, Imgproc.COLOR_BGR2GRAY);
+                        Imgproc.HoughCircles(copy, points, Imgproc.CV_HOUGH_GRADIENT,1.0,10.0,100,100,40,100);
+                        Point3[] circles = points.toArray();
+                        byte color1 = 0;
+                        byte color2 = 0;
+                        byte color3 = 0;
+                        for(int j = 0; j < circles.length; j++) {
+                            telemetry.addLine("Center: (" + circles[i].x + ", " + circles[i].y + ") Radius: " + circles[i].z);
+                            byte[] bytes = new byte[3];
+                            image.get((int)circles[i].x,(int)circles[i].y, bytes);
+                             color1 += bytes[0];
+                             color2 += bytes[1];
+                             color3 += bytes[2];
+                        }
+                      //  telemetry.addData("Length of points is ", points.length);
+                        //telemetry.update();
                     }
                     RobotLog.v("Format %d, height %d, width %d", img.getFormat(), img.getHeight(), img.getWidth());
                 }
