@@ -12,7 +12,7 @@ public class Draft1 extends OpMode{
 
     DcMotor rotatingIntake;
     DcMotor stationaryIntake;
-    //DcMotor conveyor;
+    DcMotor conveyor;
     DcMotor frontLeftDrive;
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
@@ -25,7 +25,8 @@ public class Draft1 extends OpMode{
     public void init() {
         rotatingIntake = hardwareMap.get(DcMotor.class, "rotatingIntake");
         stationaryIntake = hardwareMap.get(DcMotor.class, "stationaryIntake");
-        //conveyor = hardwareMap.get(DcMotor.class, "conveyor");
+        conveyor = hardwareMap.get(DcMotor.class, "conveyor");
+        conveyor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftDrive  = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRightDrive = hardwareMap.get(DcMotor.class, "frontRight");
         backLeftDrive  = hardwareMap.get(DcMotor.class, "backLeft");
@@ -51,13 +52,16 @@ public class Draft1 extends OpMode{
             rotatingIntake.setPower(0);
             stationaryIntake.setPower(0);
         }
-        /*while (gamepad1.x == true) {
-            conveyor.setPower(1);
-        }
-        while (gamepad1.b == true) {
-            conveyor.setPower(-1);
-        }
-*/
+       if (gamepad1.b) {
+           conveyor.setPower(1);
+       }
+        else if (gamepad1.x) {
+           conveyor.setPower(-1);
+       }
+        else {
+           conveyor.setPower(0);
+       }
+
         //main drive (Strafe) (Right Joystick)
         double w = -gamepad1.right_stick_x*fast_speed;
         double y = gamepad1.left_stick_y*fast_speed;

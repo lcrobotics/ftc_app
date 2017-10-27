@@ -39,6 +39,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Demo;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Draft1;
 
 
 /**
@@ -72,6 +73,8 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("Demo", Demo.class);
 
         manager.register("Color Images", ConceptViewMarkAndColorImages.class);
+
+        manager.register("Draft1", Draft1.class);
 
 
         /**
