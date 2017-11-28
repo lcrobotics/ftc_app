@@ -39,7 +39,10 @@ import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Demo;
-
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DemoColorVision;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DumbOpMode;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ServoTestMode;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.MechanumTank;
 
 /**
  * {@link FtcOpModeRegister} is responsible for registering opmodes for use in an FTC game.
@@ -70,10 +73,12 @@ public class FtcOpModeRegister implements OpModeRegister {
 
 
         manager.register("Demo", Demo.class);
+        manager.register("MechanumTank", MechanumTank.class);
 
         manager.register("Color Images", ConceptViewMarkAndColorImages.class);
-
-
+        manager.register("PickupTest", DumbOpMode.class);
+        manager.register("ServoTest", ServoTestMode.class);
+        manager.register("OPENCV TEST", DemoColorVision.class);
         /**
          * Any manual OpMode class registrations should go here.
          */
