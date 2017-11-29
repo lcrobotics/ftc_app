@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.opengl.Matrix;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
@@ -99,37 +101,43 @@ public class DemoColorVision extends LinearOpMode {
                         MatOfPoint3f points = new MatOfPoint3f();
                         Bitmap bitmap = Bitmap.createBitmap(img.getBufferHeight(), img.getBufferWidth(), Bitmap.Config.RGB_565);
                         bitmap.copyPixelsFromBuffer(img.getPixels());
-                        Utils.bitmapToMat(bitmap, image);
-                        Imgproc.cvtColor(image, copy, Imgproc.COLOR_BGR2GRAY);
-                        byte[] bytes = {0,0,0};
-                        image.get(100, 100, bytes);
-                        telemetry.addData("red", bytes[0]);
-                        telemetry.addData("blue", bytes[1]);
-                        telemetry.addData("green", bytes[2]);
-
-                        Imgproc.HoughCircles(copy, points, Imgproc.CV_HOUGH_GRADIENT,3.0,20.0,100,100,100,150);
-                        RobotLog.v("HOUGHCIRCLES PROBABLY RAN!!!");
-                        Point3[] circles = points.toArray();
-                        RobotLog.v("CIRCLE LENGTH IS %d", circles.length);
-                        ArrayList<Point3> uniqueCircles = new ArrayList<>();
-                        float avgX = 0;
-                        float avgY = 0;
-                        for(int j = 0; j < circles.length && j < 10; j++) {
+                       // Utils.bitmapToMat(bitmap, image);
+                       // Imgproc.cvtColor(image, copy, Imgproc.COLOR_BGR2GRAY);
+                       // Imgproc.HoughCircles(copy, points, Imgproc.CV_HOUGH_GRADIENT,3.0,20.0,100,100,100,150);
+                       // RobotLog.v("HOUGHCIRCLES PROBABLY RAN!!!");
+                       // Point3[] circles = points.toArray();
+                       // RobotLog.v("CIRCLE LENGTH IS %d", circles.length);
+                       // ArrayList<Point3> uniqueCircles = new ArrayList<>();
+                        float leftX = img.getBufferWidth()/3;
+                        float leftY = img.getBufferHeight()/2;
+                        float rightX = img.getBufferWidth()/3*2;
+                        float radius = img.getBufferWidth()/6;
+                        /*for(int j = 0; j < circles.length && j < 10; j++) {
                             RobotLog.v("CIRCLE FOR LOOP INDEX : %s!!!", j);
                             telemetry.addLine("Center: (" + circles[j].x + ", " + circles[j].y + ") Radius: " + circles[j].z);
                             RobotLog.v("X = %f, Y = %f, RADIUS = %f",circles[j].x,circles[j].y, circles[j].z);
-                            Point3 point3 = new Point3();
-                            point3.x = circles[j].x;
-                            point3.y = circles[j].y;
-                            point3.z = circles[j].z;
-                            avgX += (float)circles[j].x/circles.length;
-                            avgY += (float)circles[j].y/circles.length;
+                            //Point3 point3 = new Point3();
+                            //point3.x = circles[j].x;
+                            //point3.y = circles[j].y;
+                            //point3.z = circles[j].z;
+                            //avgX += (float)circles[j].x/circles.length;
+                            //avgY += (float)circles[j].y/circles.length;
+                        }*/
+
+                        int colorA = averageColorDisk(bitmap, leftX ,leftY, radius);
+                        int colorB = averageColorDisk(bitmap, rightX ,leftY, radius);
+                        RobotLog.v("Colors for left ball are Red: %s, Blue: %s, Green: %s", Color.red(colorA), Color.blue(colorA), Color.green(colorA));
+                        RobotLog.v("Colors for right ball are Red: %s, Blue: %s, Green: %s", Color.red(colorB), Color.blue(colorB), Color.green(colorB));
+
+                        if(Color.red(colorA) > 120) {
+                            telemetry.addLine("Red Ball");
+                            RobotLog.v("The ball is RED");
                         }
 
-                        RobotLog.v("AvgX: %f, AvgY: %f", avgX,avgY);
-                        telemetry.addData("AvgX: ", avgX);
-
-                        telemetry.addData("AvgY: ", avgY);
+                        if(Color.blue(colorA) > 120) {
+                            telemetry.addLine("Blue Ball");
+                            RobotLog.v("The ball is BLUE");
+                        }
 
 
                         telemetry.update();
@@ -143,6 +151,46 @@ public class DemoColorVision extends LinearOpMode {
 
             // Only reset the telemetry if new images arrived in the queue
         }
+    }
+
+    private int averageColorDisk(Bitmap bitmap, double centerX, double centerY, double radius) {
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int n = 0;
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        double bottomX = centerX - radius;
+        double topX = centerX + radius;
+
+        for (int x = (int) bottomX; x < topX; x++) {
+
+            double y_radius = Math.sqrt(radius * radius - (centerX - x) * (centerX - x));
+
+            double bottomY = centerY - y_radius;
+            double topY = centerY + y_radius;
+
+            for (int y = (int) bottomY; y < topY; y++) {
+
+                if (x >= 0 && x < width && y >= 0 && y < height) {
+                    int color = bitmap.getPixel(x, y);
+                    r += Color.red(color);
+                    g += Color.green(color);
+                    b += Color.blue(color);
+                    n += 1;
+                }
+
+            }
+
+        }
+
+        r /= n;
+        g /= n;
+        b /= n;
+
+        return Color.rgb(r, g, b);
     }
 }
 
