@@ -23,7 +23,8 @@ public class MechDrive extends OpMode {
     CRServo rightLift;
 
     double fast_speed = 4. / 10;
-    double slow_speed = 1. / 10;
+    double slow_speed = 2. / 10;
+    double strafe_slow_speed = 3. / 10;
 
     @Override
     public void init() {
@@ -39,8 +40,9 @@ public class MechDrive extends OpMode {
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        //stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
+
     public void drive(double x, double y, double w){
         backLeftDrive.setPower(y - x - w);
         frontLeftDrive.setPower(x + y - w);
@@ -48,41 +50,6 @@ public class MechDrive extends OpMode {
         frontRightDrive.setPower(y - x + w);
     }
 
-    /**
-     * TrapizoidDrive is a drive for the autonomous that is more accurate than the regular drive.
-     * It takes longer for the robot to speed up and slow down
-     * @param x the straife speed of the robot
-     * @param y the forward and backward to the robot
-     * @param w the rotation of the robot
-     * @param t The total time spent in run (Miliseconds)
-     * @param sustain The fraction of time spent at max speed
-     */
-    public void trapizoidDrive(double x, double y, double w, int t, double sustain){
-        double x1 = 0;
-        double y1 = 0;
-        double w1 = 0;
-        double st = t*sustain;
-        for (int iterations = 0; iterations < 10; iterations++) {
-            x1 = x1 + (x/10);
-            y1 = y1 + (y/10);
-            w1 = w1 + (w/10);
-            drive(x1,y1,w1);
-            sleep((int) (.5 * (t - st)) / 10);
-        }
-        drive(x,y,w);
-        sleep((int) (st));
-        for (int iterations = 0; iterations < 10; iterations++){
-            x1 = x1 - (x/10);
-            y1 = y1 - (y/10);
-            w1 = w1 - (w/10);
-            drive(x1, y1, w1);
-            sleep((int) (.5 * (t - st)) / 10);
-            telemetry.addData("x = ", x1);
-            telemetry.addData("y = ", y1);
-            telemetry.addData("w = ", w1);
-            drive(0,0,0);
-        }
-    }
     public void intake(double v){
         rotatingIntake.setPower(v);
         rotatingIntake.setPower(v);
@@ -91,8 +58,13 @@ public class MechDrive extends OpMode {
         leftLift.setPower(v);
         rightLift.setPower(v);
     }
-    public void extend (){
-
+    /**
+     * sets position of lift
+     * @param x should be between 0 and 1
+     */
+    public void lift(double x){
+        leftLift.setPower(1-.730*x);
+        rightLift.setPower(.730*x + 0.019);
     }
     public void sleep (int sleeptime) {
         try {
