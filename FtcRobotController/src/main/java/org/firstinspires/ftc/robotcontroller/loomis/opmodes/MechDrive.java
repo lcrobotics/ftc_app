@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by peyto on 11/28/2017.
@@ -21,6 +22,8 @@ public class MechDrive extends OpMode {
     DcMotor backRightDrive;
     CRServo leftLift;
     CRServo rightLift;
+    Servo servo1;
+    Servo servo2;
 
     double fast_speed = 4. / 10;
     double slow_speed = 2. / 10;
@@ -41,6 +44,10 @@ public class MechDrive extends OpMode {
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         //stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        servo1 = hardwareMap.servo.get("1");
+        servo2 = hardwareMap.servo.get("2");
+        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void drive(double x, double y, double w){

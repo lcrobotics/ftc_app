@@ -108,10 +108,10 @@ public class DemoColorVision extends LinearOpMode {
                        // Point3[] circles = points.toArray();
                        // RobotLog.v("CIRCLE LENGTH IS %d", circles.length);
                        // ArrayList<Point3> uniqueCircles = new ArrayList<>();
-                        float leftX = img.getBufferWidth()/3;
-                        float leftY = img.getBufferHeight()/2;
-                        float rightX = img.getBufferWidth()/3*2;
-                        float radius = img.getBufferWidth()/6;
+                        float leftX = 100;
+                        float leftY = img.getBufferWidth()/2;
+                        float rightX = img.getBufferHeight()/4*3;
+                        float radius = img.getBufferWidth()/10;
                         /*for(int j = 0; j < circles.length && j < 10; j++) {
                             RobotLog.v("CIRCLE FOR LOOP INDEX : %s!!!", j);
                             telemetry.addLine("Center: (" + circles[j].x + ", " + circles[j].y + ") Radius: " + circles[j].z);
@@ -123,11 +123,11 @@ public class DemoColorVision extends LinearOpMode {
                             //avgX += (float)circles[j].x/circles.length;
                             //avgY += (float)circles[j].y/circles.length;
                         }*/
-
+                        RobotLog.v("LeftX: %s, LeftY: %s, RightX: %s, Radius: %s", leftX,leftY,rightX,radius);
                         int colorA = averageColorDisk(bitmap, leftX ,leftY, radius);
                         int colorB = averageColorDisk(bitmap, rightX ,leftY, radius);
-                        RobotLog.v("Colors for left ball are Red: %s, Blue: %s, Green: %s", Color.red(colorA), Color.blue(colorA), Color.green(colorA));
-                        RobotLog.v("Colors for right ball are Red: %s, Blue: %s, Green: %s", Color.red(colorB), Color.blue(colorB), Color.green(colorB));
+                        RobotLog.v("Colors for left ballA are Red: %s, Blue: %s, Green: %s", Color.red(colorA), Color.blue(colorA), Color.green(colorA));
+                        RobotLog.v("Colors for right ballB are Red: %s, Blue: %s, Green: %s", Color.red(colorB), Color.blue(colorB), Color.green(colorB));
 
                         if(Color.red(colorA) > 120) {
                             telemetry.addLine("Red Ball");

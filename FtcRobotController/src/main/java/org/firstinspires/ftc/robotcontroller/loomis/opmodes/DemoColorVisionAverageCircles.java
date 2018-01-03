@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
@@ -13,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.nio.ByteBuffer;
 import java.util.Locale;
 import java.util.concurrent.BlockingQueue;
 
@@ -52,8 +56,6 @@ public class DemoColorVisionAverageCircles extends LinearOpMode {
 
         relicTrackables.activate();
 
-        int nGrayImages = 0;
-        int nNotGrayImages = 0;
         BlockingQueue<VuforiaLocalizer.CloseableFrame> frameQueue = vuforia.getFrameQueue();
 
         while (opModeIsActive()) {
@@ -61,20 +63,23 @@ public class DemoColorVisionAverageCircles extends LinearOpMode {
             // Pull raw images
             VuforiaLocalizer.CloseableFrame frame;
 
+
             while ((frame = frameQueue.poll()) != null) {
 
                 for (int i = 0; i < frame.getNumImages(); i++) {
                     Image img = frame.getImage(i);
 
                     if (img.getFormat() == PIXEL_FORMAT.GRAYSCALE) {
-                        nGrayImages++;
                     } else {
-                        nNotGrayImages++;
-                        Bitmap bitmap = Bitmap.createBitmap(img.getBufferHeight(), img.getBufferWidth(), Bitmap.Config.RGB_565);
+                        telemetry.addData("Format", img.getFormat());
+                        Bitmap bitmap = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.RGB_565);
                         bitmap.copyPixelsFromBuffer(img.getPixels());
-                        int x = 100;
-                        int y = 200;
-                        int color = bitmap.getPixel(x, y);
+                        RobotLog.v("HEIGHT: %s WIDTH: %s", bitmap.getHeight(), bitmap.getWidth());
+                        int x = 50;
+                        int y = 360;
+                        int z = 1200;
+                        int color = bitmap.getPixel(x,y);
+
                         telemetry.addData("Corner Red", Color.red(color));
                         telemetry.addData("Corner Green", Color.green(color));
                         telemetry.addData("Corner Blue", Color.blue(color));
@@ -84,9 +89,12 @@ public class DemoColorVisionAverageCircles extends LinearOpMode {
                         telemetry.addData("Average Red", Color.red(aveColor));
                         telemetry.addData("Average Green", Color.green(aveColor));
                         telemetry.addData("Average Blue", Color.blue(aveColor));
+                        int aveColor2 = averageColorDisk(bitmap, z, y, 10);
+                        telemetry.addData("Average Red", Color.red(aveColor2));
+                        telemetry.addData("Average Green", Color.green(aveColor2));
+                        telemetry.addData("Average Blue", Color.blue(aveColor2));
 
-                        telemetry.addData("Grayscale count", nGrayImages);
-                        telemetry.addData("Non-grayscale count", nNotGrayImages);
+
 
                         // Only reset the telemetry if new color arrived in the queue
                         telemetry.update();
@@ -145,17 +153,35 @@ public class DemoColorVisionAverageCircles extends LinearOpMode {
         double bottomX = centerX - radius;
         double topX = centerX + radius;
 
-        for (int x = (int) bottomX; x < topX; x++) {
+        double avgBottomY = 0;
+        double avgTopY = 0;
+        double avgYRad = 0;
+
+        double avgX = 0;
+        double avgY = 0;
+        int i = 0;
+
+        for (int x = (int) bottomX + 1; x < topX; x++) {
 
             double y_radius = Math.sqrt(radius * radius - (centerX - x) * (centerX - x));
 
             double bottomY = centerY - y_radius;
             double topY = centerY + y_radius;
 
+            avgYRad += y_radius;
+            avgBottomY += bottomY;
+            avgTopY += topY;
+            i++;
             for (int y = (int) bottomY; y < topY; y++) {
+
 
                 if (x >= 0 && x < width && y >= 0 && y < height) {
                     int color = bitmap.getPixel(x, y);
+                    if(x == centerX) {
+                      //  telemetry.addData("DATA", "(%s, %s) and (%s, %s, %s)", x, y, Color.red(color), Color.green(color), Color.blue(color));
+                    }
+                    avgX += x;
+                    avgY += y;
                     r += Color.red(color);
                     g += Color.green(color);
                     b += Color.blue(color);
@@ -169,8 +195,12 @@ public class DemoColorVisionAverageCircles extends LinearOpMode {
         r /= n;
         g /= n;
         b /= n;
-
+        telemetry.addData("Color data ", "r: %d, g: %d, b: %d, n: %d", r, g, b, n);
+        telemetry.addData("Xrange", "%s -- %s", bottomX, topX);
+        telemetry.addData("Y Range", "aBotY: %s, aTopY: %s, aYRad: %s",avgBottomY/i,avgTopY/i,avgYRad/i);
+        telemetry.addData("Avg Point", "(%s, %s)", avgX/n,avgY/n);
         return Color.rgb(r, g, b);
+
     }
 }
 
