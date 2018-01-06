@@ -28,16 +28,16 @@ public class Draft1 extends MechDrive {
         // What speed to go forward at
         if ((gamepad1.right_trigger  > 0.05 || gamepad2.right_trigger > 0.05) && (gamepad1.right_bumper == false)) {
             rotatingIntake.setPower(-1);
-            stationaryIntake.setPower(1);
+            stationaryIntake.setPower(-1);
         }else if (gamepad1.right_bumper && gamepad2.right_trigger > 0.05) {
             rotatingIntake.setPower(1);
-            stationaryIntake.setPower(-1);
+            stationaryIntake.setPower(1);
         }else if (gamepad1.right_trigger  > 0.05 && gamepad2.right_bumper) {
             rotatingIntake.setPower(-1);
-            stationaryIntake.setPower(1);
+            stationaryIntake.setPower(-1);
         } else if (gamepad1.right_bumper || gamepad2.right_bumper){
             rotatingIntake.setPower(1);
-            stationaryIntake.setPower(-1);
+            stationaryIntake.setPower(1);
         } else {
             rotatingIntake.setPower(0);
             stationaryIntake.setPower(0);
@@ -60,8 +60,12 @@ public class Draft1 extends MechDrive {
         frontRightDrive.setPower(y - x + w + dx - dy);
 
         if (gamepad1.a) lift(1);
-        if (gamepad1.b) rotatingIntake.setPower(1);
-        if (gamepad1.x) rotatingIntake.setPower(-1);
+        if (gamepad1.b) {
+            rotatingIntake.setPower(-1);
+        }
+        if (gamepad1.x) {
+            rotatingIntake.setPower(1);
+        }
 
         telemetry.addData("LeftLiftPos", leftLift.getPower());
         telemetry.addData("RightLiftPos", rightLift.getPower());

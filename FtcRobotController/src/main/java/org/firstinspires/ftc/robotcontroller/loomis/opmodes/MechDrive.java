@@ -33,6 +33,7 @@ public class MechDrive extends OpMode {
     public void init() {
         rotatingIntake = hardwareMap.get(DcMotor.class, "rotatingIntake");
         stationaryIntake = hardwareMap.get(DcMotor.class, "stationaryIntake");
+        //Not working, should be the method below this, dpad controls instead of joystick
         conveyor = hardwareMap.get(DcMotor.class, "conveyor");
         frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRightDrive = hardwareMap.get(DcMotor.class, "frontRight");
@@ -43,7 +44,7 @@ public class MechDrive extends OpMode {
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        //stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         servo1 = hardwareMap.servo.get("1");
         servo2 = hardwareMap.servo.get("2");
         frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -59,7 +60,7 @@ public class MechDrive extends OpMode {
 
     public void intake(double v){
         rotatingIntake.setPower(v);
-        rotatingIntake.setPower(v);
+        stationaryIntake.setPower(v);
     }
     public void conveyor (double v) {
         leftLift.setPower(v);

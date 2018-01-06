@@ -87,16 +87,63 @@ public abstract class AutoOp extends MechDrive {
     abstract void rightColumn();
 
     // NB: unfinished
-    public void forward (int v){
+    public void Encoderforward (int v){
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         frontRightDrive.setPower(.3);
-        frontLeftDrive.setPower(3);
-        backRightDrive.setPower(3);
-        backLeftDrive.setPower(3);
-        frontRightDrive.setTargetPosition(v);
+        frontLeftDrive.setPower(.3);
+        backRightDrive.setPower(.3);
+        backLeftDrive.setPower(.3);
+
+        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + v);
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
+        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() + v);
+        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
+    }
+
+    public void EncoderStraife (int v){
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        frontRightDrive.setPower(.3);
+        frontLeftDrive.setPower(.3);
+        backRightDrive.setPower(.3);
+        backLeftDrive.setPower(.3);
+
+
+        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() - v);
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
+        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() - v);
+        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
+        while (frontRightDrive.getCurrentPosition() < (frontRightDrive.getCurrentPosition() +v)){
+            sleep(100);
+        }
+    }
+
+    public void EncoderRotation (int v){
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        frontRightDrive.setPower(.3);
+        frontLeftDrive.setPower(.3);
+        backRightDrive.setPower(.3);
+        backLeftDrive.setPower(.3);
+
+
+        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + v);
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() - v);
+        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() - v);
+        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
+        while (frontRightDrive.getCurrentPosition() < (frontLeftDrive.getCurrentPosition() + v)) {
+            sleep(100);
+        }
     }
 
     /**
