@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by peyto on 10/25/2017.
@@ -13,95 +12,58 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Draft1 extends MechDrive {
 
 
-
-    DcMotor rotatingIntake;
-    DcMotor stationaryIntake;
-    DcMotor conveyor;
-    DcMotor frontLeftDrive;
-    DcMotor frontRightDrive;
-    DcMotor backLeftDrive;
-    DcMotor backRightDrive;
-    CRServo leftLift;
-    CRServo rightLift;
-    Servo servo1;
-    Servo servo2;
-
-
-    double a = .83;
-    double b = .83;
-    double x = 1;
-    double y = 0;
-    double endx = .5;
-    double endy = .13;      
-
-    double fast_speed = 4. / 10;
-    double slow_speed = 1. / 10;
-
     @Override
     public void init() {
-        rotatingIntake = hardwareMap.get(DcMotor.class, "rotatingIntake");
-        stationaryIntake = hardwareMap.get(DcMotor.class, "stationaryIntake");
-        conveyor = hardwareMap.get(DcMotor.class, "conveyor");
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeft");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRight");
-        leftLift = hardwareMap.crservo.get("leftLift");
-        rightLift = hardwareMap.crservo.get("rightLift");
-        servo1 = hardwareMap.servo.get("1");
-        servo2 = hardwareMap.servo.get("2");
+        super.init();
         frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        servo1.setPosition(.83);
-        servo2.setPosition(.5);
-
-
-
+        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
 
     @Override
     public void loop() {
 
-        if(gamepad1.left_bumper) {
-            servo1.setPosition(.5 * gamepad1.left_stick_y + .5);
-        }
-        if(gamepad1.right_bumper) {
-            servo2.setPosition(.5 * gamepad1.right_stick_y + .5);
-        }
-
-
-        telemetry.addData("Servo1", servo1.getPosition());
-        telemetry.addData("Servo2", servo2.getPosition());
-        telemetry.addData("A", a);
-        telemetry.addData("B", b);
-        telemetry.addData("X", x);
-        telemetry.addData("Y", y);
-
-        if(gamepad1.dpad_up) {
-            y =  servo1.getPosition();
-        }
-        if(gamepad1.dpad_right) {
-            b =  servo2.getPosition();
-        }
-        if(gamepad1.dpad_down) {
-            a =  servo2.getPosition();
-        }
-        if(gamepad1.dpad_left) {
-            x =  servo1.getPosition();
+        // What speed to go forward at
+        if ((gamepad1.right_trigger  > 0.05 || gamepad2.right_trigger > 0.05) && (gamepad1.right_bumper == false)) {
+            rotatingIntake.setPower(-1);
+            stationaryIntake.setPower(1);
+        }else if (gamepad1.right_bumper && gamepad2.right_trigger > 0.05) {
+            rotatingIntake.setPower(1);
+            stationaryIntake.setPower(-1);
+        }else if (gamepad1.right_trigger  > 0.05 && gamepad2.right_bumper) {
+            rotatingIntake.setPower(-1);
+            stationaryIntake.setPower(1);
+        } else if (gamepad1.right_bumper || gamepad2.right_bumper){
+            rotatingIntake.setPower(1);
+            stationaryIntake.setPower(-1);
+        } else {
+            rotatingIntake.setPower(0);
+            stationaryIntake.setPower(0);
         }
 
-        if(gamepad1.a) {
-            servo2.setPosition(a);
-        }
-        if(gamepad1.y) {
-            servo1.setPosition(y);
-        }
-        if(gamepad1.x) {
-            servo1.setPosition(x);
-        }
-        if(gamepad1.b) {
-            servo1.setPosition(b);
-        }
+        conveyor.setPower(gamepad2.left_stick_y);
+
+
+        //main drive (Strafe) (Right Joystick)
+        double w = gamepad1.right_stick_x * fast_speed;
+        double y = gamepad1.left_stick_y * fast_speed;
+        double x = -gamepad1.left_stick_x * fast_speed;
+        double dy = (gamepad1.dpad_down ? -slow_speed : 0) + (gamepad1.dpad_up ? slow_speed : 0);
+        double dx = (gamepad1.dpad_left ? -strafe_slow_speed : 0) + (gamepad1.dpad_right ? strafe_slow_speed : 0);
+
+
+        backLeftDrive.setPower(y - x - w + dx - dy);
+        frontLeftDrive.setPower(x + y - w - dx - dy);
+        backRightDrive.setPower(x + y + w - dx - dy);
+        frontRightDrive.setPower(y - x + w + dx - dy);
+
+        if (gamepad1.a) lift(1);
+        if (gamepad1.b) rotatingIntake.setPower(1);
+        if (gamepad1.x) rotatingIntake.setPower(-1);
+
+        telemetry.addData("LeftLiftPos", leftLift.getPower());
+        telemetry.addData("RightLiftPos", rightLift.getPower());
     }
 }
