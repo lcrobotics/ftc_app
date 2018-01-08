@@ -70,6 +70,7 @@ public class MechDrive extends OpMode {
      * sets position of lift
      * @param x should be between 0 and 1
      */
+
     public void lift(double x){
         leftLift.setPower(1-.730*x);
         rightLift.setPower(.730*x + 0.019);
