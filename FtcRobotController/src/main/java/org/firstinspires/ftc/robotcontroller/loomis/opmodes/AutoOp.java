@@ -89,7 +89,38 @@ public abstract class AutoOp extends MechDrive {
     abstract void rightColumn();
 
     // NB: unfinished
-    public void Encoderforward (int v){
+    public void EncoderForward (int v){
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        frontRightDrive.setPower(.3);
+        frontLeftDrive.setPower(.3);
+        backRightDrive.setPower(.3);
+        backLeftDrive.setPower(.3);
+
+        int vf = frontLeftDrive.getCurrentPosition() + v;
+
+        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + v);
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
+        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() + v);
+        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
+
+        while (Math.abs(frontRightDrive.getCurrentPosition() - vf) > (10)) {
+            sleep(100);
+        }
+
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+    }
+
+
+    public void EncoderRotation (int v){
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -100,10 +131,21 @@ public abstract class AutoOp extends MechDrive {
         backRightDrive.setPower(.3);
         backLeftDrive.setPower(.3);
 
+        int vf = frontLeftDrive.getCurrentPosition() + v;
+
         frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + v);
-        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
-        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() + v);
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() - v);
+        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() - v);
         backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
+
+        while (Math.abs(frontRightDrive.getCurrentPosition() - vf) > (10)) {
+            sleep(100);
+        }
+
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void EncoderStraife (int v){
@@ -117,36 +159,25 @@ public abstract class AutoOp extends MechDrive {
         backRightDrive.setPower(.3);
         backLeftDrive.setPower(.3);
 
+        int vf = frontLeftDrive.getCurrentPosition() + v;
+
 
         frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() - v);
         frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
         backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() - v);
         backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
-        while (frontRightDrive.getCurrentPosition() < (frontRightDrive.getCurrentPosition() +v)){
+
+        while (Math.abs(frontRightDrive.getCurrentPosition() - vf) > (10)) {
             sleep(100);
         }
+
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void EncoderRotation (int v){
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        frontRightDrive.setPower(.3);
-        frontLeftDrive.setPower(.3);
-        backRightDrive.setPower(.3);
-        backLeftDrive.setPower(.3);
-
-
-        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + v);
-        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() - v);
-        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() - v);
-        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
-        while (frontRightDrive.getCurrentPosition() < (frontLeftDrive.getCurrentPosition() + v)) {
-            sleep(100);
-        }
-    }
 
     /**
      * TrapizoidDrive is a drive for the autonomous that is more accurate than the regular drive.

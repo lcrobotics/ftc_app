@@ -40,9 +40,9 @@ import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BlueAutoOpP;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ColorFinder;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Crabthing;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Demo;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DemoColorVision;
-
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Draft1;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DumbOpMode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.RedAutoOpP;
@@ -83,6 +83,9 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("PickupTest", DumbOpMode.class);
         manager.register("ServoTest", ServoTestMode.class);
         manager.register("OPENCV TEST", DemoColorVision.class);
+        manager.register("CrabThing", Crabthing.class);
+
+
 
         manager.register("Draft1", Draft1.class);
 
