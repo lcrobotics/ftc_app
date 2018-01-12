@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.RobotLog;
 
 /**
  * Created by peyto on 11/28/2017.
@@ -20,14 +21,17 @@ public class MechDrive extends OpMode {
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
+    DcMotor relicSlide;
+
     CRServo leftLift;
     CRServo rightLift;
+
     Servo servo1;
     Servo servo2;
 
-    double fast_speed = 4. / 10;
-    double slow_speed = 2. / 10;
-    double strafe_slow_speed = 3. / 10;
+    double fast_speed = .4;
+    double slow_speed = .2;
+    double strafe_slow_speed = .3;
 
     @Override
     public void init() {
@@ -39,6 +43,7 @@ public class MechDrive extends OpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "frontRight");
         backLeftDrive = hardwareMap.get(DcMotor.class, "backLeft");
         backRightDrive = hardwareMap.get(DcMotor.class, "backRight");
+        relicSlide = hardwareMap.get(DcMotor.class, "rel");
         leftLift = hardwareMap.get(CRServo.class, "leftLift");
         rightLift = hardwareMap.get(CRServo.class, "rightLift");
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -49,6 +54,7 @@ public class MechDrive extends OpMode {
         servo2 = hardwareMap.servo.get("2");
         frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        relicSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void drive(double x, double y, double w){
@@ -79,6 +85,7 @@ public class MechDrive extends OpMode {
         try {
             Thread.sleep(sleeptime, 0);
         } catch (InterruptedException e) {
+            RobotLog.v("Got interupted while sleeping for %d millis. Error %s", sleeptime, e.getMessage());
             e.printStackTrace();
         }
     }

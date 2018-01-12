@@ -68,7 +68,6 @@ public class DemoColorVisionAverageCircles extends LinearOpMode {
 
                 for (int i = 0; i < frame.getNumImages(); i++) {
                     Image img = frame.getImage(i);
-
                     if (img.getFormat() == PIXEL_FORMAT.GRAYSCALE) {
                     } else {
                         telemetry.addData("Format", img.getFormat());

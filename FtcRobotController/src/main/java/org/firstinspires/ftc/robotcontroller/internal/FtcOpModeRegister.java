@@ -37,15 +37,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ArcadeTeleOp;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackBlueRobotCode;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BlueAutoOpP;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ColorFinder;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Demo;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DemoColorVision;
 
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Draft1;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DumbOpMode;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ServoDemo;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.RedAutoOpP;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ServoTestMode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.MechanumTank;
 import org.firstinspires.ftc.robotcore.internal.android.dx.dex.code.DalvInsn;
@@ -76,8 +76,6 @@ public class FtcOpModeRegister implements OpModeRegister {
      * @see com.qualcomm.robotcore.eventloop.opmode.Autonomous
      */
     public void register(OpModeManager manager) {
-
-
         manager.register("Demo", Demo.class);
         manager.register("MechanumTank", MechanumTank.class);
 
@@ -87,12 +85,10 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("OPENCV TEST", DemoColorVision.class);
 
         manager.register("Draft1", Draft1.class);
-        manager.register("BackBlueRobotCode", BackBlueRobotCode.class);
-        manager.register("ArcadeTeleOp", ArcadeTeleOp.class);
-        manager.register("ServoDemo", ServoDemo.class);
 
-        /**
-         * Any manual OpMode class registrations should go here.
-         */
+        manager.register("BLUEAUTOOP", BlueAutoOpP.class);
+        manager.register("REDAUTOOP", RedAutoOpP.class);
+
+        manager.register("ColorFinder", ColorFinder.class);
     }
 }

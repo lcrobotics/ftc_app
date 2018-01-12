@@ -30,20 +30,22 @@ public abstract class AutoOp extends MechDrive {
 
 
     public int state = 0;
-    public final int START = 0;
-    public final int INITCAMERA = 1;
-    public final int CHECKJEWELS = 2;
-    public final int KNOCKJEWELLEFT = 3;
-    public final int KNOCKJEWELRIGHT = 4;
-    public final int LEFTCOLUMN = 5;
-    public final int MIDCOLUMN = 6;
-    public final int RIGHTCOLUMN = 7;
-    public final int END = 8;
 
+   // private enum State {
+        public final int START = 0;
+        public final int INITCAMERA = 1;
+        public final int CHECKJEWELS = 2;
+        public final int KNOCKJEWELLEFT = 3;
+        public final int KNOCKJEWELRIGHT = 4;
+        public final int LEFTCOLUMN = 5;
+        public final int MIDCOLUMN = 6;
+        public final int RIGHTCOLUMN = 7;
+        public final int END = 8;
 
-    public boolean isBlueTeam;
-    public boolean leftIsBlue = false;
-    public boolean rightIsBlue = false;
+    //}
+
+    public boolean rightRed;
+
     private VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
     public VuforiaTrackables relicTrackables;
@@ -58,7 +60,7 @@ public abstract class AutoOp extends MechDrive {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AXkMfE//////AAAAGeoid3R/QkyvsvhE2vtnsyyDQKIMOCtifA0K0u47e5Rq8EJ1bcCpJu7o7gx5ijO9W3Ec9de3oWpPQF9sWWvPLeU22iBDpOSejIMch+IbHWNKRmDto3Q4N+C1f71g05vCgVx6ko432OZVvSO+kQJRC91pWPU2XYHZ4qXE7k6iKbLUwhsRaUYNstEkQQGDxn9FrBqO5RLwvU8ZfvQEIjOFJcwSK4EBe5F9WzLZtK0P5nWnaqtUcmPvnNcaR7ynTl54HxWyXO8a/ePz6fNj2nVEUYXa6u2NDvzbJ4UTPpgmfKtHIrQbnXC+QuZRlCXqqIvfcz/Wei6jyOiWMvXz8mw8Jf6a+9yYjc11z5aLMwG1ppFZ";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
 
         // Initialize Vuforia
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
@@ -185,11 +187,15 @@ public abstract class AutoOp extends MechDrive {
 
     @Override
     public void loop() {
-
+        telemetry.addData("State", state);
         switch(state) {
             case START:
                 relicTrackables.activate();
-                state = INITCAMERA;
+                state = CHECKJEWELS;
+                servo2.setPosition(.83);
+                servo1.setPosition(.5);
+                sleep(500);
+                servo1.setPosition(.8);
                 break;
 
             case INITCAMERA:
@@ -204,6 +210,7 @@ public abstract class AutoOp extends MechDrive {
                 BlockingQueue<VuforiaLocalizer.CloseableFrame> frameQueue = vuforia.getFrameQueue();
                 VuforiaLocalizer.CloseableFrame frame;
                 int ct = 0;
+                whileLoop:
                 while ((frame = frameQueue.poll()) != null) {
                     ct++;
 
@@ -214,46 +221,44 @@ public abstract class AutoOp extends MechDrive {
                             continue;
                         } else {
 
-                            Mat image = new Mat(img.getBufferHeight(), img.getBufferWidth(), CV_8UC3);
-                            Mat copy = new Mat(img.getBufferHeight(), img.getBufferWidth(), CV_8UC1);
-                            MatOfPoint3f points = new MatOfPoint3f();
-                            Bitmap bitmap = Bitmap.createBitmap(img.getBufferHeight(), img.getBufferWidth(), Bitmap.Config.RGB_565);
+
+                            // TODO: THIS IS BROKEN!
+                            Bitmap bitmap = Bitmap.createBitmap(img.getBufferWidth(), img.getBufferHeight(), Bitmap.Config.RGB_565);
                             bitmap.copyPixelsFromBuffer(img.getPixels());
 
-                            float leftX = img.getBufferWidth() / 3;
-                            float leftY = img.getBufferHeight() / 2;
-                            float rightX = img.getBufferWidth() / 3 * 2;
-                            float radius = img.getBufferWidth() / 6;
-
+                            float leftX = img.getWidth() * 0.72916f;
+                            float leftY = img.getHeight() * 0.416f;
+                            float radius = img.getWidth() / 6;
 
                             int colorA = averageColorDisk(bitmap, leftX, leftY, radius);
-                            int colorB = averageColorDisk(bitmap, rightX, leftY, radius);
                             RobotLog.v("Colors for left ball are Red: %s, Blue: %s, Green: %s", Color.red(colorA), Color.blue(colorA), Color.green(colorA));
-                            RobotLog.v("Colors for right ball are Red: %s, Blue: %s, Green: %s", Color.red(colorB), Color.blue(colorB), Color.green(colorB));
+                            String colormsg = String.format("Red: %s, Blue: %s, Green: %s", Color.red(colorA), Color.blue(colorA), Color.green(colorA));
+                            telemetry.addLine(colormsg);
 
-                            if (Color.red(colorA) > 120) {
+                            rightRed = Color.red(colorA) > Color.blue(colorA);
+                            if (rightRed) {
                                 telemetry.addLine("Red Ball");
                                 RobotLog.v("The ball is RED");
-                                leftIsBlue = false;
-                                if(isBlueTeam) {
-                                    state = KNOCKJEWELRIGHT;
-                                }
-                                else state = KNOCKJEWELLEFT;
-
+                                state = isBlueTeam() ? KNOCKJEWELRIGHT : KNOCKJEWELLEFT;
                             }
-
-                            if (Color.blue(colorA) > 120) {
+                            else {
+                                telemetry.addLine("Blue Ball");
+                                RobotLog.v("The ball is BLUE");
+                                state = isBlueTeam() ? KNOCKJEWELLEFT : KNOCKJEWELRIGHT;
+                            }
+                            frame.close();
+                            break whileLoop;
+                            /*if (Color.blue(colorA) > 120) {
                                 telemetry.addLine("Blue Ball");
                                 RobotLog.v("The ball is BLUE");
                                 leftIsBlue = true;
-                                if(isBlueTeam) {
+                                if(isBlueTeam()) {
                                     state = KNOCKJEWELLEFT;
                                 }
                                 else state = KNOCKJEWELRIGHT;
-                            }
+                            }*/
 
 
-                            telemetry.update();
                             //  telemetry.addData("Length of points is ", points.length);
                             //telemetry.update();
                         }
@@ -263,30 +268,23 @@ public abstract class AutoOp extends MechDrive {
                 }
                 break;
             case KNOCKJEWELLEFT:
-                servo1.setPosition(.75);
-                sleep(300);
-                servo2.setPosition(.75);
-                sleep(300);
-                servo1.setPosition(.4);
-                sleep(300);
-                servo2.setPosition(1);
+                servo2.setPosition(.0);
+                sleep(1000);
                 servo1.setPosition(0);
-                switch (vuMark) {
+                servo2.setPosition(.5);
+                state = END;
+                break;
+             /*   switch (vuMark) {
                     case LEFT: state = LEFTCOLUMN; break;
                     case RIGHT: state = RIGHTCOLUMN; break;
                     case CENTER: state = MIDCOLUMN; break;
-                }
-
-                break;
+                }*/
             case KNOCKJEWELRIGHT:
-                servo1.setPosition(.75);
-                sleep(300);
-                servo2.setPosition(.75);
-                sleep(300);
-                servo1.setPosition(1);
-                sleep(300);
                 servo2.setPosition(1);
+                sleep(1000);
+                servo2.setPosition(.5);
                 servo1.setPosition(0);
+                state = END;
                 break;
             case LEFTCOLUMN:
                 leftColumn();
@@ -301,9 +299,11 @@ public abstract class AutoOp extends MechDrive {
                 state = END;
                 break;
             case END:
+                lift(1.0);
                 break;
             default: break;
         }
+        telemetry.update();
     }
 
     private int averageColorDisk(Bitmap bitmap, double centerX, double centerY, double radius) {
@@ -345,5 +345,9 @@ public abstract class AutoOp extends MechDrive {
 
         return Color.rgb(r, g, b);
     }
+
+
+
+    public abstract boolean isBlueTeam();
 
 }
