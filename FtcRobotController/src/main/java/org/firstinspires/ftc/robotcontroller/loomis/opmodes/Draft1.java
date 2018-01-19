@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Draft1 extends MechDrive {
 
 
-    private int maxEncoder = 14860;
-    private int minEncoder = 500;
+    private int maxEncoder = 14000;
+    private int minEncoder = 100;
 
     @Override
     public void init() {
@@ -19,6 +20,7 @@ public class Draft1 extends MechDrive {
 
         servo2.setPosition(.5);
         servo1.setPosition(0);
+        relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 
@@ -27,6 +29,9 @@ public class Draft1 extends MechDrive {
 
 
         relicSlide.setPower(0);
+        servo1.setPosition(0);
+        servo2.setPosition(.5);
+        float slidePower = 0f;
 
         // What speed to go forward at
         if ((gamepad1.right_trigger  > 0.05 || gamepad2.right_trigger > 0.05) && (!gamepad1.right_bumper)) {
@@ -61,19 +66,11 @@ public class Draft1 extends MechDrive {
 
 
         if(gamepad2.dpad_right && relicSlide.getCurrentPosition() < maxEncoder) {
-            relicSlide.setPower(.3);
-
-        }else if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
-            relicSlide.setPower(-.3);
-
-        }else relicSlide.setPower(0);
-
-//        if(gamepad2.dpad_up) {
-//            minEncoder = relicSlide.getCurrentPosition();
-//        }
-//        if(gamepad2.dpad_down) {
-//            maxEncoder = relicSlide.getCurrentPosition();
-//        }
+            slidePower = .2f;
+        }
+        if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
+            slidePower = -.2f;
+        }
 
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());
 
@@ -95,5 +92,6 @@ public class Draft1 extends MechDrive {
         telemetry.addData("RightLiftPos", rightLift.getPower());
 
         processGamepad1A();
+        relicSlide.setPower(slidePower);
     }
 }

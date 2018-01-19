@@ -52,5 +52,10 @@ public class BackRedRobotCode extends AutoOp {
         stop();
     }
 
+    @Override
+    public boolean isBlueTeam() {
+        return true;
+    }
+
 
 }

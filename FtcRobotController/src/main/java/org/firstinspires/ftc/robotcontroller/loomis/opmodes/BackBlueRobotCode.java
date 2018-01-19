@@ -76,4 +76,9 @@ public class BackBlueRobotCode extends AutoOp {
         EncoderRotation(2000);
     }
 
+    @Override
+    public boolean isBlueTeam() {
+        return true;
+    }
+
 }

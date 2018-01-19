@@ -19,4 +19,9 @@ public class BackRobotCodeParent extends AutoOp {
     void rightColumn() {
 
     }
+
+    @Override
+    public boolean isBlueTeam() {
+        return true;
+    }
 }
