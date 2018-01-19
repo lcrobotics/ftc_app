@@ -27,8 +27,6 @@ public class Draft1 extends MechDrive {
     @Override
     public void loop() {
 
-
-        relicSlide.setPower(0);
         servo1.setPosition(0);
         servo2.setPosition(.5);
         float slidePower = 0f;

@@ -87,7 +87,7 @@ public class MechDrive extends OpMode {
         if (OpenState) {
             grabber.setPosition(0);
         } else {
-            grabber.setPosition(.4);
+            grabber.setPosition(.70);
         }
     }
 
