@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class Draft1 extends MechDrive {
 
 
-    private int maxEncoder = 8500;
-    private int minEncoder = 50;
+    private int maxEncoder = 14860;
+    private int minEncoder = 500;
 
     @Override
     public void init() {
@@ -15,15 +15,17 @@ public class Draft1 extends MechDrive {
         frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        lift(1);
 
+        servo2.setPosition(.5);
+        servo1.setPosition(0);
     }
 
 
     @Override
     public void loop() {
 
-        servo1.setPosition(.5);
-        servo2.setPosition(.13);
+
         relicSlide.setPower(0);
 
         // What speed to go forward at
@@ -44,7 +46,10 @@ public class Draft1 extends MechDrive {
             stationaryIntake.setPower(0);
         }
 
-        conveyor.setPower(gamepad2.left_stick_y);
+
+        if (gamepad2.dpad_up) conveyor.setPower(.3);
+        else if (gamepad2.dpad_down) conveyor.setPower(-.3);
+        else conveyor.setPower(gamepad2.left_stick_y/2);
 
 
         //main drive (Strafe) (Right Joystick)
@@ -56,18 +61,20 @@ public class Draft1 extends MechDrive {
 
 
         if(gamepad2.dpad_right && relicSlide.getCurrentPosition() < maxEncoder) {
-            relicSlide.setPower(.2);
-        }
-        if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
-            relicSlide.setPower(-.2);
-        }
+            relicSlide.setPower(.3);
 
-        if(gamepad2.dpad_up) {
-            minEncoder = relicSlide.getCurrentPosition();
-        }
-        if(gamepad2.dpad_down) {
-            maxEncoder = relicSlide.getCurrentPosition();
-        }
+        }else if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
+            relicSlide.setPower(-.3);
+
+        }else relicSlide.setPower(0);
+
+//        if(gamepad2.dpad_up) {
+//            minEncoder = relicSlide.getCurrentPosition();
+//        }
+//        if(gamepad2.dpad_down) {
+//            maxEncoder = relicSlide.getCurrentPosition();
+//        }
+
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());
 
 
@@ -77,7 +84,6 @@ public class Draft1 extends MechDrive {
         backRightDrive.setPower(x + y + w - dx - dy);
         frontRightDrive.setPower(y - x + w + dx - dy);
 
-        if (gamepad1.a) lift(1);
         if (gamepad1.b) {
             rotatingIntake.setPower(-1);
         }
@@ -87,5 +93,7 @@ public class Draft1 extends MechDrive {
 
         telemetry.addData("LeftLiftPos", leftLift.getPower());
         telemetry.addData("RightLiftPos", rightLift.getPower());
+
+        processGamepad1A();
     }
 }

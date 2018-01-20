@@ -34,6 +34,9 @@ public class MechDrive extends OpMode {
     double slow_speed = .2;
     double strafe_slow_speed = .3;
 
+    boolean isGrabberOpen = false;
+    boolean toggledlastloop = false;
+
     @Override
     public void init() {
         rotatingIntake = hardwareMap.get(DcMotor.class, "rotatingIntake");
@@ -56,7 +59,8 @@ public class MechDrive extends OpMode {
         servo2 = hardwareMap.servo.get("2");
         frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
-        relicSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        grabberSetPosition(true);
+        relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void drive(double x, double y, double w){
@@ -74,24 +78,38 @@ public class MechDrive extends OpMode {
         leftLift.setPower(v);
         rightLift.setPower(v);
     }
-//    public void grabber (int switchNum) {
-//        int openOrClosed = 0;
-//        switch (openOrClosed) {
-//            case 0:
-//                grabber.setPosition();
-//                break;
-//            case 1:
-//                grabber.setPosition();
-//                break;
-//        }
-//    }
+
+    /**
+     * Sets postition of relic grabing mechanism
+     * @param OpenState Decides whether the grabber is open
+     */
+    public void grabberSetPosition (boolean OpenState) {
+        if (OpenState) {
+            grabber.setPosition(0);
+        } else {
+            grabber.setPosition(.4);
+        }
+    }
+
+    public void toggle (){
+        isGrabberOpen ^= true;
+        grabberSetPosition(isGrabberOpen);
+    }
+    public void processGamepad1A (){
+        if (gamepad2.a && !toggledlastloop){
+            toggle();
+        }
+        toggledlastloop = gamepad2.a;
+    }
+
+
     /**
      * sets position of lift
      * @param x should be between 0 and 1
      */
 
     public void lift(double x){
-        leftLift.setPower(1-.730*x);
+        leftLift.setPower(1 -.73*x);
         rightLift.setPower(.730*x + 0.019);
     }
     public void sleep (int sleeptime) {
