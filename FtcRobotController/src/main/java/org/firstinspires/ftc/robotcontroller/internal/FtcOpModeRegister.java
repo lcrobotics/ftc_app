@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackBlueRobotCode;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackRedRobotCode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BlueAutoOpP;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ColorFinder;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
@@ -74,21 +76,13 @@ public class FtcOpModeRegister implements OpModeRegister {
      * @see com.qualcomm.robotcore.eventloop.opmode.Autonomous
      */
     public void register(OpModeManager manager) {
-        manager.register("Demo", Demo.class);
-        manager.register("MechanumTank", MechanumTank.class);
 
-        manager.register("Color Images", ConceptViewMarkAndColorImages.class);
-        manager.register("PickupTest", DumbOpMode.class);
-        manager.register("ServoTest", ServoTestMode.class);
-        manager.register("OPENCV TEST", DemoColorVision.class);
+        manager.register("Tele. Op.", Draft1.class);
 
+        manager.register("Blue Auto.", BlueAutoOpP.class);
+        manager.register("Red Auto.", RedAutoOpP.class);
 
-
-        manager.register("Draft1", Draft1.class);
-
-        manager.register("BLUEAUTOOP", BlueAutoOpP.class);
-        manager.register("REDAUTOOP", RedAutoOpP.class);
-
-        manager.register("ColorFinder", ColorFinder.class);
+        manager.register("Back Blue Auto. (With Park)", BackBlueRobotCode.class);
+        manager.register("Back Red Auto (With Park)", BackRedRobotCode.class);
     }
 }

@@ -12,9 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class BackBlueRobotCode extends AutoOp {
 
     @Override
-    public void init() {
-        super.init();
-    }
+    public void init() {super.init();}
 
     public void forwardforcolumn(int columnum) {
         int t = 0;
@@ -25,7 +23,7 @@ public class BackBlueRobotCode extends AutoOp {
         }else if (columnum == 3){
             t = 900;
         }
-        trapizoidDrive(-.3, 0, 0, t, .5);
+        trapizoidDrive(0, 4, 0, t, .5);
     }
 
     public void rotate90degrees(){
@@ -38,7 +36,7 @@ public class BackBlueRobotCode extends AutoOp {
     }
 
     public void off_the_balance(){
-        trapizoidDrive(0, -.3, 0, 600, .5);
+        trapizoidDrive(0, .3, 0, 600, .5);
     }
     public void stop_wheels(){
         drive(0, 0,0);
@@ -59,6 +57,11 @@ public class BackBlueRobotCode extends AutoOp {
         forwardforcolumn(2);
         stop_wheels();
     }
+    public void park() {
+        off_the_balance();
+        forwardforcolumn(2);
+        stop_wheels();
+    }
 
     public void rightColumn() {
         off_the_balance();
@@ -69,12 +72,6 @@ public class BackBlueRobotCode extends AutoOp {
     }
     int count;
 
-    @Override
-    public void loop() {
-        EncoderForward(2000);
-        EncoderStraife(2000);
-        EncoderRotation(2000);
-    }
 
     @Override
     public boolean isBlueTeam() {

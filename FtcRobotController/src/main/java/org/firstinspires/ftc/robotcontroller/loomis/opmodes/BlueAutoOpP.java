@@ -21,6 +21,9 @@ public class BlueAutoOpP extends AutoOp {
 
     }
 
+    public void park(){
+
+    }
     @Override
     void rightColumn() {
 

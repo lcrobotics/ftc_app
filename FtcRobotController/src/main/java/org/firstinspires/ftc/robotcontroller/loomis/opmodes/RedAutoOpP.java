@@ -14,6 +14,9 @@ public class RedAutoOpP extends AutoOp {
     void leftColumn() {
 
     }
+    public void park(){
+
+    }
 
     @Override
     void midColumn() {

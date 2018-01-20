@@ -16,41 +16,52 @@ public class BackRedRobotCode extends AutoOp {
         super.init();
     }
 
-    public void forwardforcolumn(int columnNum) {
-        drive(0, -.2, 0);
-        sleep(columnNum);
+    public void stop_wheels(){
+        drive(0, 0,0);
+    }
+
+    public void forwardforcolumn(int columnum) {
+        int t = 0;
+        if (columnum == 1) {
+            t = 700;
+        }else if (columnum == 2){
+            t = 800;
+        }else if (columnum == 3){
+            t = 900;
+        }
+        trapizoidDrive(0, 0.4, 0, t, .5);
     }
 
     public void rotate90degrees(){
         drive(0, 0, -.2);
         sleep(400);
     }
+    public void off_the_balance(){
+        trapizoidDrive(0, .3, 0, 600, .5);
+    }
 
     public void leftColumn() {
-        forwardforcolumn( 500);
+        forwardforcolumn( 1);
         rotate90degrees();
         drive(0, 0, 0);
     }
 
     public void midColumn() {
-        forwardforcolumn(550);
+        forwardforcolumn(2);
         rotate90degrees();
         drive(0, 0, 0);
     }
 
     public void rightColumn() {
-        forwardforcolumn(600);
+        forwardforcolumn(3);
         rotate90degrees();
         drive(0, 0, 0);
     }
-
-    @Override
-    public void loop() {
-        lift(1);
-        leftColumn();
-        sleep(100000);
-        stop();
+    public void park(){
+        off_the_balance();
+        forwardforcolumn(2);
     }
+
 
     @Override
     public boolean isBlueTeam() {

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
@@ -40,7 +41,8 @@ public abstract class AutoOp extends MechDrive {
         public final int LEFTCOLUMN = 5;
         public final int MIDCOLUMN = 6;
         public final int RIGHTCOLUMN = 7;
-        public final int END = 8;
+        public final int PARKING = 8;
+        public final int END = 9;
 
     //}
 
@@ -87,6 +89,8 @@ public abstract class AutoOp extends MechDrive {
     abstract void midColumn();
 
     abstract void rightColumn();
+
+    abstract void park();
 
     // NB: unfinished
     public void EncoderForward (int v){
@@ -303,7 +307,7 @@ public abstract class AutoOp extends MechDrive {
                 sleep(1000);
                 servo1.setPosition(0);
                 servo2.setPosition(.5);
-                state = END;
+                state = PARKING;
                 break;
              /*   switch (vuMark) {
                     case LEFT: state = LEFTCOLUMN; break;
@@ -315,7 +319,7 @@ public abstract class AutoOp extends MechDrive {
                 sleep(1000);
                 servo2.setPosition(.5);
                 servo1.setPosition(0);
-                state = END;
+                state = PARKING;
                 break;
             case LEFTCOLUMN:
                 leftColumn();
@@ -327,6 +331,10 @@ public abstract class AutoOp extends MechDrive {
                 break;
             case RIGHTCOLUMN:
                 rightColumn();
+                state = END;
+                break;
+            case PARKING:
+                park();
                 state = END;
                 break;
             case END:

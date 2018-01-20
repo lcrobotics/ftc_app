@@ -59,7 +59,7 @@ public class MechDrive extends OpMode {
         servo2 = hardwareMap.servo.get("2");
         frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
-        grabberSetPosition(true);
+        grabberSetPosition(false);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
