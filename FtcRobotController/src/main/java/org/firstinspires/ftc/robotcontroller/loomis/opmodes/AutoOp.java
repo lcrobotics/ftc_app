@@ -194,7 +194,7 @@ public abstract class AutoOp extends MechDrive {
         backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void EncoderStraife (int v){
+    public void EncoderStrafe (int v){
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
