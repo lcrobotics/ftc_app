@@ -57,7 +57,6 @@ public class MechDrive extends OpMode {
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         servo1 = hardwareMap.servo.get("1");
         servo2 = hardwareMap.servo.get("2");
-        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         grabberSetPosition(false);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -87,7 +86,7 @@ public class MechDrive extends OpMode {
         if (OpenState) {
             grabber.setPosition(0);
         } else {
-            grabber.setPosition(.70);
+            grabber.setPosition(.80);
         }
     }
 
@@ -110,7 +109,7 @@ public class MechDrive extends OpMode {
 
     public void lift(double x){
         leftLift.setPower(1 -.73*x);
-        rightLift.setPower(.730*x + 0.019);
+        rightLift.setPower(.732*x + 0.021);
     }
     public void sleep (int sleeptime) {
         try {

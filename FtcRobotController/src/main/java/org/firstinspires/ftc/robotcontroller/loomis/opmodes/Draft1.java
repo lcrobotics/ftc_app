@@ -12,10 +12,10 @@ public class Draft1 extends MechDrive {
     @Override
     public void init() {
         super.init();
-        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+//        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         lift(1);
 
         servo2.setPosition(.5);
@@ -52,32 +52,33 @@ public class Draft1 extends MechDrive {
 
         if (gamepad2.dpad_up) conveyor.setPower(.3);
         else if (gamepad2.dpad_down) conveyor.setPower(-.3);
-        else conveyor.setPower(gamepad2.left_stick_y/2);
+        else conveyor.setPower(gamepad2.left_stick_y/1.5);
 
 
         //main drive (Strafe) (Right Joystick)
-        double w = gamepad1.right_stick_x * fast_speed;
-        double y = gamepad1.left_stick_y * fast_speed;
-        double x = -gamepad1.left_stick_x * fast_speed;
         double dy = (gamepad1.dpad_down ? -slow_speed : 0) + (gamepad1.dpad_up ? slow_speed : 0);
         double dx = (gamepad1.dpad_left ? -strafe_slow_speed : 0) + (gamepad1.dpad_right ? strafe_slow_speed : 0);
+        double w = -gamepad1.right_stick_x * fast_speed;
+        double y = ((-gamepad1.left_stick_y * fast_speed) + dy);
+        double x = ((gamepad1.left_stick_x * fast_speed) + dx);
 
+
+        telemetry.addData("Y value", gamepad1.left_stick_y);
 
         if(gamepad2.dpad_right && relicSlide.getCurrentPosition() < maxEncoder) {
-            slidePower = .2f;
+            slidePower = .3f;
         }
         if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
-            slidePower = -.2f;
+            slidePower = -.3f;
         }
 
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());
 
-
-
-        backLeftDrive.setPower(y - x - w + dx - dy);
-        frontLeftDrive.setPower(x + y - w - dx - dy);
-        backRightDrive.setPower(x + y + w - dx - dy);
-        frontRightDrive.setPower(y - x + w + dx - dy);
+        drive(x,y,w);
+//        backLeftDrive.setPower(y - x - w + dx - dy);
+//        frontLeftDrive.setPower(x + y - w - dx - dy);
+//        backRightDrive.setPower(x + y + w - dx - dy);
+//        frontRightDrive.setPower(y - x + w + dx - dy);
 
         if (gamepad1.b) {
             rotatingIntake.setPower(-1);

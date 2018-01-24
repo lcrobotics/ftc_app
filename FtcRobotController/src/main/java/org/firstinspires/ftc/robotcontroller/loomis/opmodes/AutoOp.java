@@ -306,7 +306,7 @@ public abstract class AutoOp extends MechDrive {
                 servo2.setPosition(.0);
                 sleep(1000);
                 servo1.setPosition(0);
-                servo2.setPosition(.5);
+                servo2.setPosition(.4);
                 state = PARKING;
                 break;
              /*   switch (vuMark) {
@@ -317,7 +317,7 @@ public abstract class AutoOp extends MechDrive {
             case KNOCKJEWELRIGHT:
                 servo2.setPosition(1);
                 sleep(1000);
-                servo2.setPosition(.5);
+                servo2.setPosition(.4);
                 servo1.setPosition(0);
                 state = PARKING;
                 break;
