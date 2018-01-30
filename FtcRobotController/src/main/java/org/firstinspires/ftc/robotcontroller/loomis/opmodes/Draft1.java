@@ -66,10 +66,10 @@ public class Draft1 extends MechDrive {
         telemetry.addData("Y value", gamepad1.left_stick_y);
 
         if(gamepad2.dpad_right && relicSlide.getCurrentPosition() < maxEncoder) {
-            slidePower = .3f;
+            slidePower = 1f;
         }
         if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
-            slidePower = -.3f;
+            slidePower = -.5f;
         }
 
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());

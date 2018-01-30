@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 /**
- * Created by peyto on 11/28/2017.
+ * Created by Students on 1/30/2018.
  */
 
-public class FrontBlueRobotCode extends AutoOp {
+public class FrontRedRobotOp extends AutoOp {
 
     @Override
     public void init() {super.init();}
@@ -53,7 +53,7 @@ public class FrontBlueRobotCode extends AutoOp {
         stop_wheels();
     }
     public void park() {
-        trapizoidDrive(0, .3, 0, 1359, .3);
+        trapizoidDrive(0, -.3, 0, 1359, .3);
         trapizoidDrive(1, -.1, 0, 547, .1);
 
     }
@@ -72,5 +72,5 @@ public class FrontBlueRobotCode extends AutoOp {
     public boolean isBlueTeam() {
         return true;
     }
-
 }
+
