@@ -32,10 +32,12 @@ public class ServoTestMode extends MechDrive {
 
 
         if(gamepad1.left_bumper) {
-            servo1.setPosition(.5 * gamepad1.left_stick_y + .5);
-                    }
+            //servo1.setPosition(.5 * gamepad1.left_stick_y + .5);
+            servo1.setPosition(gamepad1.left_stick_y);
+        }
         if(gamepad1.right_bumper) {
-            servo2.setPosition(.5 * gamepad1.right_stick_y + .5);
+            //servo2.setPosition(.5 * gamepad1.right_stick_y + .5);
+            servo2.setPosition(gamepad1.right_stick_y);
         }
 
         telemetry.addData("Servo1", servo1.getPosition());

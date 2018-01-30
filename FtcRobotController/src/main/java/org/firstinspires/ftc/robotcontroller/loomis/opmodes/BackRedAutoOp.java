@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * Created by peyto on 11/28/2017.
  */
 
-public class BackRedRobotCode extends AutoOp {
+public class BackRedAutoOp extends AutoOp {
 
     @Override
     public void init() {

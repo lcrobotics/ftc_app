@@ -37,20 +37,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackBlueRobotCode;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackRedRobotCode;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackBlueAutoOp;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackRedAutoOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BlueAutoOpP;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ColorFinder;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ConceptViewMarkAndColorImages;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Demo;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DemoColorVision;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Draft1;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.DumbOpMode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.FrontBlueRobotCode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.FrontRedRobotOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.RedAutoOpP;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ServoTestMode;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.MechanumTank;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.TestOp;
 
 /**
@@ -85,11 +79,13 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("Blue Auto.", BlueAutoOpP.class);
         manager.register("Red Auto.", RedAutoOpP.class);
 
-        manager.register("Back Blue Auto. (With Park)", BackBlueRobotCode.class);
-        manager.register("Back Red Auto (With Park)", BackRedRobotCode.class);
+        manager.register("Back Blue Auto Park", BackBlueAutoOp.class);
+        manager.register("Back Red Auto Park", BackRedAutoOp.class);
         manager.register("Front Blue Auto Park", FrontBlueRobotCode.class);
         manager.register("Front Red Auto Park", FrontRedRobotOp.class);
-        manager.register("TESTING WOW VERY COOL VERY NICE", TestOp.class);
+        manager.register("TESTING WOAW VERY COOL VERY NICE", TestOp.class);
+
+        manager.register("Servo Test", ServoTestMode.class);
 
     }
 
