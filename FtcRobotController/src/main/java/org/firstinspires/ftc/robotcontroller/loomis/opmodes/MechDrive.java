@@ -101,6 +101,24 @@ public class MechDrive extends OpMode {
         toggledlastloop = gamepad2.a;
     }
 
+    public void encoderDrive(int desiredPosition) {
+        double power = 0;
+        double storePower = frontLeftDrive.getPower();
+        power = .03*(desiredPosition - frontLeftDrive.getCurrentPosition());
+        power = storePower + limitAcceleration(frontLeftDrive.getCurrentPosition(), desiredPosition, storePower, power);
+        drive(0, power, 0);
+    }
+
+    public double limitAcceleration(int pos, int desPos,double storePower, double power) {
+        if(power - storePower > .1 || power - storePower < -.1) {
+            return power - storePower < 0 ? -.1 : .1;
+        }
+
+        else return power - storePower;
+
+        /*power += 10*(power - storePower)/(pos - desPos + 1);
+        return power;*/
+    }
 
     /**
      * sets position of lift

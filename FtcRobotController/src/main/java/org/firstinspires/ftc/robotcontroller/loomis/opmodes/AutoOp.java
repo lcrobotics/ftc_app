@@ -269,8 +269,8 @@ public abstract class AutoOp extends MechDrive {
             case START:
                 relicTrackables.activate();
                 state = CHECKJEWELS;
-                servo2.setPosition(.83);
-                servo1.setPosition(.5);
+                servo2.setPosition(.88);
+                servo1.setPosition(.6);
                 sleep(500);
                 servo1.setPosition(.8);
                 break;
@@ -299,7 +299,6 @@ public abstract class AutoOp extends MechDrive {
                         } else {
 
 
-                            // TODO: THIS IS BROKEN!
                             Bitmap bitmap = Bitmap.createBitmap(img.getBufferWidth(), img.getBufferHeight(), Bitmap.Config.RGB_565);
                             bitmap.copyPixelsFromBuffer(img.getPixels());
 
@@ -316,12 +315,12 @@ public abstract class AutoOp extends MechDrive {
                             if (rightRed) {
                                 telemetry.addLine("Red Ball");
                                 RobotLog.v("The ball is RED");
-                                state = isBlueTeam() ? KNOCKJEWELRIGHT : KNOCKJEWELLEFT;
+                                state = isBlueTeam() ? KNOCKJEWELLEFT : KNOCKJEWELRIGHT ;
                             }
                             else {
                                 telemetry.addLine("Blue Ball");
                                 RobotLog.v("The ball is BLUE");
-                                state = isBlueTeam() ? KNOCKJEWELLEFT : KNOCKJEWELRIGHT;
+                                state = isBlueTeam() ? KNOCKJEWELRIGHT : KNOCKJEWELLEFT;
                             }
                             frame.close();
                             break whileLoop;
@@ -353,7 +352,7 @@ public abstract class AutoOp extends MechDrive {
                 break;
 
             case KNOCKJEWELRIGHT:
-                servo2.setPosition(1);
+                servo2.setPosition(2);
                 sleep(1000);
                 servo2.setPosition(.4);
                 servo1.setPosition(0);
@@ -381,13 +380,18 @@ public abstract class AutoOp extends MechDrive {
                 break;
             case PARKING:
                 park();
-                state = END;
                 break;
             case END:
                 lift(1.0);
                 break;
             default: break;
         }
+        vuMark = RelicRecoveryVuMark.from(relicTemplate);
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                    RobotLog.v("COLUMN IS: %s", vuMark);
+                    relicTrackables.deactivate();
+                }
+        telemetry.addData("vuMark", vuMark);
         telemetry.update();
     }
 
