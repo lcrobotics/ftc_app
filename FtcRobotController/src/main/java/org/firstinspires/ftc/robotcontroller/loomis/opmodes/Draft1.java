@@ -52,7 +52,7 @@ public class Draft1 extends MechDrive {
 
         if (gamepad2.dpad_up) conveyor.setPower(.3);
         else if (gamepad2.dpad_down) conveyor.setPower(-.3);
-        else conveyor.setPower(gamepad2.left_stick_y/1.5);
+        else conveyor.setPower(gamepad2.left_stick_y);
 
 
         //main drive (Strafe) (Right Joystick)
@@ -75,6 +75,10 @@ public class Draft1 extends MechDrive {
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());
 
         drive(x,y,w);
+        telemetry.addData("Back Right" ,backRightDrive.getCurrentPosition());
+        telemetry.addData("Back Left", backLeftDrive.getCurrentPosition());
+        telemetry.addData("Front right", frontRightDrive.getCurrentPosition());
+        telemetry.addData("Front Left", frontLeftDrive.getCurrentPosition());
 //        backLeftDrive.setPower(y - x - w + dx - dy);
 //        frontLeftDrive.setPower(x + y - w - dx - dy);
 //        backRightDrive.setPower(x + y + w - dx - dy);

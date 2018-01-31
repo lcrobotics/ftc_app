@@ -43,6 +43,7 @@ public abstract class AutoOp extends MechDrive {
         public final int RIGHTCOLUMN = 7;
         public final int PARKING = 8;
         public final int END = 9;
+        public final int JEWELDONE = 10;
 
     //}
 
@@ -92,6 +93,39 @@ public abstract class AutoOp extends MechDrive {
 
     abstract void park();
 
+    public void EncoderAveragingForward (int v){
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        frontRightDrive.setPower(.3);
+        frontLeftDrive.setPower(.3);
+        backRightDrive.setPower(.3);
+        backLeftDrive.setPower(.3);
+
+        int targetFrontLeft = frontLeftDrive.getCurrentPosition() + v;
+        int targetBackRight = backRightDrive.getCurrentPosition() + v;
+
+        double averageTargetPos = (targetBackRight + targetFrontLeft) / 2;
+
+        double average = (frontLeftDrive.getCurrentPosition() + backRightDrive.getCurrentPosition()) / 2;
+
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
+        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + v);
+
+        while (Math.abs(average - averageTargetPos) > (10)) {
+            sleep(100);
+            telemetry.addData("","Back Right %d/%d", backRightDrive.getCurrentPosition(), targetBackRight);
+            telemetry.addData("","Front Left %d/%d", frontLeftDrive.getCurrentPosition(), targetFrontLeft);
+            telemetry.update();
+        }
+
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
     // NB: unfinished
     public void EncoderForward (int v){
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -106,6 +140,9 @@ public abstract class AutoOp extends MechDrive {
         backLeftDrive.setPower(.3);
 
         int vf = frontLeftDrive.getCurrentPosition() + v;
+        int vf1 = frontRightDrive.getCurrentPosition() + v;
+        int vf2 = backLeftDrive.getCurrentPosition() + v;
+        int vf3 = backRightDrive.getCurrentPosition() + v;
 
         frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + v);
         frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + v);
@@ -114,6 +151,11 @@ public abstract class AutoOp extends MechDrive {
 
         while (Math.abs(frontRightDrive.getCurrentPosition() - vf) > (10)) {
             sleep(100);
+            telemetry.addData("","Left Back %d/%d", backLeftDrive.getCurrentPosition(), vf2);
+            telemetry.addData("","Back Right %d/%d", backRightDrive.getCurrentPosition(), vf3);
+            telemetry.addData("","Front Left %d/%d", frontLeftDrive.getCurrentPosition(), vf);
+            telemetry.addData("", "Front Right Drive %d/%d",frontRightDrive.getCurrentPosition(), vf1);
+            telemetry.update();
         }
 
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -307,18 +349,22 @@ public abstract class AutoOp extends MechDrive {
                 sleep(1000);
                 servo1.setPosition(0);
                 servo2.setPosition(.4);
-                state = PARKING;
+                state = JEWELDONE;
                 break;
-             /*   switch (vuMark) {
-                    case LEFT: state = LEFTCOLUMN; break;
-                    case RIGHT: state = RIGHTCOLUMN; break;
-                    case CENTER: state = MIDCOLUMN; break;
-                }*/
+
             case KNOCKJEWELRIGHT:
                 servo2.setPosition(1);
                 sleep(1000);
                 servo2.setPosition(.4);
                 servo1.setPosition(0);
+                state = JEWELDONE;
+                break;
+            case JEWELDONE:
+            switch (vuMark) {
+                    case LEFT: state = LEFTCOLUMN; break;
+                    case RIGHT: state = RIGHTCOLUMN; break;
+                    case CENTER: state = MIDCOLUMN; break;
+                }
                 state = PARKING;
                 break;
             case LEFTCOLUMN:

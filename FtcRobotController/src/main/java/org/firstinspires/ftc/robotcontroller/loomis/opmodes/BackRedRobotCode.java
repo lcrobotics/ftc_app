@@ -36,8 +36,9 @@ public class BackRedRobotCode extends AutoOp {
         drive(0, 0, -.2);
         sleep(400);
     }
-    public void off_the_balance(){
-        trapizoidDrive(0, .3, 0, 600, .5);
+
+    public void off_the_balance() {
+        trapizoidDrive(0, -.3, 0, 900, .5);
     }
 
     public void leftColumn() {
@@ -59,13 +60,13 @@ public class BackRedRobotCode extends AutoOp {
     }
     public void park(){
         off_the_balance();
-        forwardforcolumn(2);
+        stop_wheels();
     }
 
 
     @Override
     public boolean isBlueTeam() {
-        return true;
+        return false;
     }
 
 

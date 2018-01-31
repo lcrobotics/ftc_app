@@ -17,7 +17,7 @@ public class BackBlueRobotCode extends AutoOp {
     public void forwardforcolumn(int columnum) {
         int t = 0;
         if (columnum == 1) {
-            t = 700;
+            t = 600;
         }else if (columnum == 2){
             t = 800;
         }else if (columnum == 3){
@@ -36,7 +36,10 @@ public class BackBlueRobotCode extends AutoOp {
     }
 
     public void off_the_balance(){
-        trapizoidDrive(0, .3, 0, 600, .5);
+        trapizoidDrive(0, .3, 0, 900, .5);
+    }
+    public void strafe(){
+        trapizoidDrive(-1, 0 ,0, 400, .5);
     }
     public void stop_wheels(){
         drive(0, 0,0);
@@ -59,7 +62,7 @@ public class BackBlueRobotCode extends AutoOp {
     }
     public void park() {
         off_the_balance();
-        forwardforcolumn(2);
+        strafe();
         stop_wheels();
     }
 
