@@ -41,7 +41,7 @@ public abstract class AutoOp extends MechDrive {
 
     //}
 
-    public boolean rightRed;
+    public boolean leftRed;
 
     private VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
@@ -75,7 +75,7 @@ public abstract class AutoOp extends MechDrive {
         telemetry.update();
 
         verticalArm.setPosition(0);
-        horizontalArm.setPosition(.1);
+        horizontalArm.setPosition(.08);
 
     }
 
@@ -301,7 +301,7 @@ public abstract class AutoOp extends MechDrive {
                             bitmap.copyPixelsFromBuffer(img.getPixels());
 
                             float leftX = img.getWidth() * 0.76f;
-                            float leftY = img.getHeight() * 0.83f;
+                            float leftY = img.getHeight() * 0.17f;
                             float radius = img.getWidth() / 6;
 
                             int colorA = averageColorDisk(bitmap, leftX, leftY, radius);
@@ -309,8 +309,8 @@ public abstract class AutoOp extends MechDrive {
                             String colormsg = String.format("Red: %s, Blue: %s, Green: %s", Color.red(colorA), Color.blue(colorA), Color.green(colorA));
                             telemetry.addLine(colormsg);
 
-                            rightRed = Color.red(colorA) > Color.blue(colorA);
-                            if (rightRed) {
+                            leftRed = Color.red(colorA) > Color.blue(colorA);
+                            if (leftRed) {
                                 telemetry.addLine("Red Ball");
                                 RobotLog.v("The ball is RED");
                                 state = isBlueTeam() ? KNOCKJEWELLEFT : KNOCKJEWELRIGHT ;
@@ -376,9 +376,10 @@ public abstract class AutoOp extends MechDrive {
                 break;
             case PARKING:
                 park();
+                state = END;
                 break;
             case END:
-                lift(1.0);
+                lift();
                 break;
             default: break;
         }

@@ -121,11 +121,10 @@ public class MechDrive extends OpMode {
     }
 
     /**
-     * sets position of lift
-     * @param x should be between 0 and 1
+     *  raise lift
      */
 
-    public void lift(double x){
+    public void lift(){
         leftLift.setPower(.3);
         rightLift.setPower(.79);
     }

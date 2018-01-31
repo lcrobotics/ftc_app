@@ -15,7 +15,7 @@ public class Draft1 extends MechDrive {
 //        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
 //        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
 //        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        lift(1);
+        lift();
 
         horizontalArm.setPosition(.5);
         verticalArm.setPosition(0);
