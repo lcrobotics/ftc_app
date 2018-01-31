@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
@@ -15,13 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint3f;
 
 import java.util.concurrent.BlockingQueue;
-
-import static org.opencv.core.CvType.CV_8UC1;
-import static org.opencv.core.CvType.CV_8UC3;
 
 /**
  * Created by Students on 11/29/2017.
@@ -80,8 +74,8 @@ public abstract class AutoOp extends MechDrive {
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
 
-
-
+        verticalArm.setPosition(0);
+        horizontalArm.setPosition(.1);
 
     }
 
@@ -262,17 +256,21 @@ public abstract class AutoOp extends MechDrive {
     }
 
 
+    public void deployArm(){
+        verticalArm.setPosition(.5);
+        sleep(250);
+        horizontalArm.setPosition(.5);
+        sleep(250);
+        verticalArm.setPosition(.8);
+    }
     @Override
     public void loop() {
         telemetry.addData("State", state);
         switch(state) {
             case START:
                 relicTrackables.activate();
+                deployArm();
                 state = CHECKJEWELS;
-                servo2.setPosition(.88);
-                servo1.setPosition(.6);
-                sleep(500);
-                servo1.setPosition(.8);
                 break;
 
             case INITCAMERA:
@@ -302,8 +300,8 @@ public abstract class AutoOp extends MechDrive {
                             Bitmap bitmap = Bitmap.createBitmap(img.getBufferWidth(), img.getBufferHeight(), Bitmap.Config.RGB_565);
                             bitmap.copyPixelsFromBuffer(img.getPixels());
 
-                            float leftX = img.getWidth() * 0.72916f;
-                            float leftY = img.getHeight() * 0.416f;
+                            float leftX = img.getWidth() * 0.76f;
+                            float leftY = img.getHeight() * 0.83f;
                             float radius = img.getWidth() / 6;
 
                             int colorA = averageColorDisk(bitmap, leftX, leftY, radius);
@@ -344,26 +342,24 @@ public abstract class AutoOp extends MechDrive {
                 }
                 break;
             case KNOCKJEWELLEFT:
-                servo2.setPosition(.0);
-                sleep(1000);
-                servo1.setPosition(0);
-                servo2.setPosition(.4);
+                horizontalArm.setPosition(0);
+                sleep(250);
                 state = JEWELDONE;
                 break;
 
             case KNOCKJEWELRIGHT:
-                servo2.setPosition(2);
-                sleep(1000);
-                servo2.setPosition(.4);
-                servo1.setPosition(0);
+                horizontalArm.setPosition(1);
+                sleep(250);
                 state = JEWELDONE;
                 break;
             case JEWELDONE:
-            switch (vuMark) {
-                    case LEFT: state = LEFTCOLUMN; break;
-                    case RIGHT: state = RIGHTCOLUMN; break;
-                    case CENTER: state = MIDCOLUMN; break;
-                }
+                verticalArm.setPosition(0);
+                horizontalArm.setPosition(.1);
+//            switch (vuMark) {
+//                    case LEFT: state = LEFTCOLUMN; break;
+//                    case RIGHT: state = RIGHTCOLUMN; break;
+//                    case CENTER: state = MIDCOLUMN; break;
+//                }
                 state = PARKING;
                 break;
             case LEFTCOLUMN:

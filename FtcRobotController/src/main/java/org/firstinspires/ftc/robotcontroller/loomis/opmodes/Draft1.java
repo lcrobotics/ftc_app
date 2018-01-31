@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Draft1 extends MechDrive {
 
@@ -18,8 +17,8 @@ public class Draft1 extends MechDrive {
 //        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         lift(1);
 
-        servo2.setPosition(.5);
-        servo1.setPosition(0);
+        horizontalArm.setPosition(.5);
+        verticalArm.setPosition(0);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
@@ -27,8 +26,8 @@ public class Draft1 extends MechDrive {
     @Override
     public void loop() {
 
-        servo1.setPosition(0);
-        servo2.setPosition(.5);
+        verticalArm.setPosition(0);
+        horizontalArm.setPosition(.5);
         float slidePower = 0f;
 
         // What speed to go forward at

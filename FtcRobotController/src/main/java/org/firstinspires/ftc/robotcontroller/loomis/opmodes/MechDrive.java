@@ -26,8 +26,8 @@ public class MechDrive extends OpMode {
     CRServo leftLift;
     CRServo rightLift;
 
-    Servo servo1;
-    Servo servo2;
+    Servo verticalArm;
+    Servo horizontalArm;
     Servo grabber;
 
     double fast_speed = .4;
@@ -55,8 +55,8 @@ public class MechDrive extends OpMode {
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
-        servo1 = hardwareMap.servo.get("1");
-        servo2 = hardwareMap.servo.get("2");
+        verticalArm = hardwareMap.servo.get("1");
+        horizontalArm = hardwareMap.servo.get("2");
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         grabberSetPosition(false);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -126,8 +126,8 @@ public class MechDrive extends OpMode {
      */
 
     public void lift(double x){
-        leftLift.setPower(1 -.73*x);
-        rightLift.setPower(.732*x + 0.021);
+        leftLift.setPower(.3);
+        rightLift.setPower(.79);
     }
     public void sleep (int sleeptime) {
         try {
