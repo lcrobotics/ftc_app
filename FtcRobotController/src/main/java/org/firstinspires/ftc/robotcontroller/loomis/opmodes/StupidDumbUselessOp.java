@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
@@ -9,20 +12,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class StupidDumbUselessOp extends OpMode {
 
-    DcMotor motor;
+    ColorSensor motor;
 
 
     @Override
     public void init() {
-        motor = hardwareMap.dcMotor.get("m");
+        motor = hardwareMap.get(ColorSensor.class, "m");
 
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
     @Override
     public void loop() {
-        motor.setPower(1.0);
-        telemetry.addData("Econdor", motor.getCurrentPosition());
+        telemetry.addData("Econdor", motor.red());
+        telemetry.addData("Econdor", motor.green());
+        telemetry.addData("Econdor", motor.blue());
+        telemetry.addData("Econdor", "%08x", motor.argb());
+
     }
 }

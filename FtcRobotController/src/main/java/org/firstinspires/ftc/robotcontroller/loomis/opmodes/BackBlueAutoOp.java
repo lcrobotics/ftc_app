@@ -34,8 +34,9 @@ public class BackBlueAutoOp extends AutoOp {
     public void off_the_balance(){
         trapizoidDrive(0, .3, 0, 900, .5);
     }
+    
     public void strafe(){
-        trapizoidDrive(-.7, 0 ,0, 400, .5);
+        trapizoidDrive(-1, 0 ,0, 200, .5);
     }
     public void stop_wheels(){
         drive(0, 0,0);

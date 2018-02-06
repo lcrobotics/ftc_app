@@ -2,6 +2,7 @@ package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -30,6 +31,7 @@ public class MechDrive extends OpMode {
     Servo horizontalArm;
     Servo grabber;
 
+    ColorSensor colorSensor;
     double fast_speed = .4;
     double strafe_fast_speed = 0.8;
     double slow_speed = .2;
@@ -52,6 +54,7 @@ public class MechDrive extends OpMode {
         leftLift = hardwareMap.get(CRServo.class, "leftLift");
         rightLift = hardwareMap.get(CRServo.class, "rightLift");
         grabber = hardwareMap.get(Servo.class, "grabber");
+        colorSensor = hardwareMap.get(ColorSensor.class, "cs");
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);

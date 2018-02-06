@@ -54,7 +54,7 @@ public class FrontRedRobotOp extends AutoOp {
     }
     public void park() {
         trapizoidDrive(0, -.3, 0, 1359, .3);
-        trapizoidDrive(1, -.1, 0, 547, .1);
+        trapizoidDrive(1, 0, 0, 547, .1);
 
     }
 

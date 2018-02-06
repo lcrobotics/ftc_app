@@ -45,16 +45,15 @@ public class FrontBlueRobotCode extends AutoOp {
         stop_wheels();
     }
 
+    public int colorCount = 0;
+
     public void midColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(2);
-        stop_wheels();
+        park();
+        drive(.3, 0, 0);
+        if(colorSensor.blue() > 100) {}
     }
     public void park() {
         trapizoidDrive(0, .3, 0, 1359, .3);
-        trapizoidDrive(1, -.1, 0, 547, .1);
 
     }
 

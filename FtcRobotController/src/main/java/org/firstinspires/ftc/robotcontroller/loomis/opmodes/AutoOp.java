@@ -353,7 +353,7 @@ public abstract class AutoOp extends MechDrive {
                 state = JEWELDONE;
                 break;
             case JEWELDONE:
-                verticalArm.setPosition(0);
+                verticalArm.setPosition(0.05);
                 horizontalArm.setPosition(.1);
 //            switch (vuMark) {
 //                    case LEFT: state = LEFTCOLUMN; break;
@@ -380,6 +380,8 @@ public abstract class AutoOp extends MechDrive {
                 break;
             case END:
                 lift();
+                sleep(9000);
+                verticalArm.setPosition(0.0);
                 break;
             default: break;
         }
