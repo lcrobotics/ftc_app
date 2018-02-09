@@ -17,8 +17,8 @@ public class Draft1 extends MechDrive {
 //        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         lift();
 
-        horizontalArm.setPosition(.5);
         verticalArm.setPosition(0);
+        horizontalArm.setPosition(.1);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
@@ -26,22 +26,20 @@ public class Draft1 extends MechDrive {
     @Override
     public void loop() {
 
-        verticalArm.setPosition(0);
-        horizontalArm.setPosition(.5);
         float slidePower = 0f;
 
         // What speed to go forward at
         if ((gamepad1.right_trigger  > 0.05 || gamepad2.right_trigger > 0.05) && (!gamepad1.right_bumper)) {
-            rotatingIntake.setPower(-1);
+            rotatingIntake.setPower(1);
             stationaryIntake.setPower(-1);
         }else if (gamepad1.right_bumper && gamepad2.right_trigger > 0.05) {
-            rotatingIntake.setPower(1);
+            rotatingIntake.setPower(-1);
             stationaryIntake.setPower(1);
         }else if (gamepad1.right_trigger  > 0.05 && gamepad2.right_bumper) {
-            rotatingIntake.setPower(-1);
+            rotatingIntake.setPower(1);
             stationaryIntake.setPower(-1);
         } else if (gamepad1.right_bumper || gamepad2.right_bumper){
-            rotatingIntake.setPower(1);
+            rotatingIntake.setPower(-1);
             stationaryIntake.setPower(1);
         } else {
             rotatingIntake.setPower(0);
@@ -54,12 +52,37 @@ public class Draft1 extends MechDrive {
         else conveyor.setPower(gamepad2.left_stick_y);
 
 
+
         //main drive (Strafe) (Right Joystick)
+//        double w = -gamepad1.right_stick_x * fast_speed;
+//        double y = ((-gamepad1.left_stick_y * fast_speed) + dy);
+//        double x = ((gamepad1.left_stick_x * fast_speed) + dx);
         double dy = (gamepad1.dpad_down ? -slow_speed : 0) + (gamepad1.dpad_up ? slow_speed : 0);
         double dx = (gamepad1.dpad_left ? -strafe_slow_speed : 0) + (gamepad1.dpad_right ? strafe_slow_speed : 0);
-        double w = -gamepad1.right_stick_x * fast_speed;
-        double y = ((-gamepad1.left_stick_y * fast_speed) + dy);
-        double x = ((gamepad1.left_stick_x * fast_speed) + dx);
+        double w;
+        double y = (-gamepad1.left_stick_y);
+        double x = (gamepad1.left_stick_x);
+
+
+        if (gamepad1.left_trigger > 0.5){
+            conveyor.setPower(gamepad1.right_stick_y);
+            w = 0;
+        }else {
+            w = -gamepad1.right_stick_x;
+        }
+
+
+        if (gamepad1.left_bumper){
+            w *= slow_speed;
+            y *= slow_speed;
+            x *= strafe_slow_speed;
+        }else {
+            w *= fast_speed;
+            y *= fast_speed;
+            x *= strafe_fast_speed;
+        }
+            y += dy;
+            x += dx;
 
 
         telemetry.addData("Y value", gamepad1.left_stick_y);
@@ -68,7 +91,7 @@ public class Draft1 extends MechDrive {
             slidePower = 1f;
         }
         if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
-            slidePower = -.5f;
+            slidePower = -1f;
         }
 
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());
@@ -78,17 +101,8 @@ public class Draft1 extends MechDrive {
         telemetry.addData("Back Left", backLeftDrive.getCurrentPosition());
         telemetry.addData("Front right", frontRightDrive.getCurrentPosition());
         telemetry.addData("Front Left", frontLeftDrive.getCurrentPosition());
-//        backLeftDrive.setPower(y - x - w + dx - dy);
-//        frontLeftDrive.setPower(x + y - w - dx - dy);
-//        backRightDrive.setPower(x + y + w - dx - dy);
-//        frontRightDrive.setPower(y - x + w + dx - dy);
 
-        if (gamepad1.b) {
-            rotatingIntake.setPower(-1);
-        }
-        if (gamepad1.x) {
-            rotatingIntake.setPower(1);
-        }
+
 
         telemetry.addData("LeftLiftPos", leftLift.getPower());
         telemetry.addData("RightLiftPos", rightLift.getPower());

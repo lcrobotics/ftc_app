@@ -27,19 +27,15 @@ public class BackBlueAutoOp extends AutoOp {
     }
 
     public void rotate90degrees(){
-        trapizoidDrive(0, 0, .2, 800, .5);
+        trapizoidDrive(0, 0, -.2, 800, .5);
     }
 
-    public void positioning(){
-        trapizoidDrive(0, .2, 0, 175, .5);
-        trapizoidDrive(.3,0,0,850, .5);
-    }
 
     public void off_the_balance(){
         trapizoidDrive(0, .3, 0, 900, .5);
     }
     public void strafe(){
-        trapizoidDrive(-1, 0 ,0, 400, .5);
+        trapizoidDrive(-.7, 0 ,0, 400, .5);
     }
     public void stop_wheels(){
         drive(0, 0,0);
@@ -47,32 +43,31 @@ public class BackBlueAutoOp extends AutoOp {
 
     public void leftColumn() {
         off_the_balance();
-        rotate90degrees();
-        positioning();
+        stop_wheels();
         forwardforcolumn(1);
+        stop_wheels();
+        rotate90degrees();
         stop_wheels();
     }
 
     public void midColumn() {
         off_the_balance();
         rotate90degrees();
-        positioning();
         forwardforcolumn(2);
-        stop_wheels();
-    }
-    public void park() {
-        off_the_balance();
-        strafe();
         stop_wheels();
     }
 
     public void rightColumn() {
         off_the_balance();
-        rotate90degrees();
-        positioning();
         forwardforcolumn(3);
         stop_wheels();
     }
+
+    public void park() {
+        off_the_balance();
+        stop_wheels();
+    }
+
     int count;
 
 

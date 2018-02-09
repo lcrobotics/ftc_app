@@ -31,6 +31,7 @@ public class MechDrive extends OpMode {
     Servo grabber;
 
     double fast_speed = .4;
+    double strafe_fast_speed = 0.8;
     double slow_speed = .2;
     double strafe_slow_speed = .3;
 
@@ -60,7 +61,8 @@ public class MechDrive extends OpMode {
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         grabberSetPosition(false);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
+        relicSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+      }
 
     public void drive(double x, double y, double w){
         backLeftDrive.setPower(y - x - w);
