@@ -23,8 +23,8 @@ public class ServoTestMode extends MechDrive {
     public void init() {
         super.init();
 
-        servo1.setPosition(.83);
-        servo2.setPosition(.5);
+        verticalArm.setPosition(.83);
+        horizontalArm.setPosition(.5);
     }
 
     @Override
@@ -32,16 +32,16 @@ public class ServoTestMode extends MechDrive {
 
 
         if(gamepad1.left_bumper) {
-            //servo1.setPosition(.5 * gamepad1.left_stick_y + .5);
-            servo1.setPosition(gamepad1.left_stick_y);
+            //verticalArm.setPosition(.5 * gamepad1.left_stick_y + .5);
+            verticalArm.setPosition(gamepad1.left_stick_y);
         }
         if(gamepad1.right_bumper) {
-            //servo2.setPosition(.5 * gamepad1.right_stick_y + .5);
-            servo2.setPosition(gamepad1.right_stick_y);
+            //horizontalArm.setPosition(.5 * gamepad1.right_stick_y + .5);
+            horizontalArm.setPosition(gamepad1.right_stick_y);
         }
 
-        telemetry.addData("Servo1", servo1.getPosition());
-        telemetry.addData("Servo2", servo2.getPosition());
+        telemetry.addData("Servo1", verticalArm.getPosition());
+        telemetry.addData("Servo2", horizontalArm.getPosition());
         telemetry.addData("A", a);
         telemetry.addData("B", b);
         telemetry.addData("X", x);
@@ -49,29 +49,29 @@ public class ServoTestMode extends MechDrive {
 
 
        if(gamepad1.dpad_up) {
-            y =  servo1.getPosition();
+            y =  verticalArm.getPosition();
         }
         if(gamepad1.dpad_right) {
-            b =  servo2.getPosition();
+            b =  horizontalArm.getPosition();
         }
         if(gamepad1.dpad_down) {
-            a =  servo2.getPosition();
+            a =  horizontalArm.getPosition();
         }
         if(gamepad1.dpad_left) {
-            x =  servo1.getPosition();
+            x =  verticalArm.getPosition();
         }
 
          if(gamepad1.a) {
-            servo2.setPosition(a);
+            horizontalArm.setPosition(a);
         }
         if(gamepad1.y) {
-            servo1.setPosition(y);
+            verticalArm.setPosition(y);
         }
         if(gamepad1.x) {
-            servo1.setPosition(x);
+            verticalArm.setPosition(x);
         }
         if(gamepad1.b) {
-            servo2.setPosition(b);
+            horizontalArm.setPosition(b);
         }
     }
 }
