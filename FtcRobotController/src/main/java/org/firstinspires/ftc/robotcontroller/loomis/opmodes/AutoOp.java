@@ -274,12 +274,7 @@ public abstract class AutoOp extends MechDrive {
                 relicTrackables.activate();
                 deployArm();
                 state = CHECKJEWELS;
-                lift();
-                stationaryIntake.setPower(1);
-                rotatingIntake.setPower(1);
-                sleep(1000);
-                stationaryIntake.setPower(0);
-                rotatingIntake.setPower(0);
+
                 break;
 
             case INITCAMERA:
