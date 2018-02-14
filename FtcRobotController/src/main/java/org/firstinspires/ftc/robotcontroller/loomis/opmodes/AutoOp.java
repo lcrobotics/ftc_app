@@ -274,7 +274,12 @@ public abstract class AutoOp extends MechDrive {
                 relicTrackables.activate();
                 deployArm();
                 state = CHECKJEWELS;
-
+                lift();
+                stationaryIntake.setPower(1);
+                rotatingIntake.setPower(1);
+                sleep(1000);
+                stationaryIntake.setPower(0);
+                rotatingIntake.setPower(0);
                 break;
 
             case INITCAMERA:
@@ -370,6 +375,7 @@ public abstract class AutoOp extends MechDrive {
 //                }
                 state = TAKINGINBLOCK;
                 break;
+
             case TAKINGINBLOCK:
                 lift();
                 sleep(9000);
@@ -382,6 +388,7 @@ public abstract class AutoOp extends MechDrive {
 
                 state = PARKING;
                 break;
+                
             case DRIVETOFIRSTCOL:
                 drive(0, 0, 0);
                 BlockingQueue<VuforiaLocalizer.CloseableFrame> frameQueue2 = vuforia.getFrameQueue();
