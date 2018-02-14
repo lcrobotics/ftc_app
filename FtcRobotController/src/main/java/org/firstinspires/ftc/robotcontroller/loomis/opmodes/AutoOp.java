@@ -379,6 +379,7 @@ public abstract class AutoOp extends MechDrive {
                 state = END;
                 break;
             case END:
+                verticalArm.setPosition(0.25);
                 lift();
                 sleep(9000);
                 verticalArm.setPosition(0.0);
