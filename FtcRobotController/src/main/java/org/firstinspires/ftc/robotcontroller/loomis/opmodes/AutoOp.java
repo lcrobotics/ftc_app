@@ -26,18 +26,19 @@ public abstract class AutoOp extends MechDrive {
 
     public int state = 0;
 
-   // private enum State {
-        public final int START = 0;
-        public final int INITCAMERA = 1;
-        public final int CHECKJEWELS = 2;
-        public final int KNOCKJEWELLEFT = 3;
-        public final int KNOCKJEWELRIGHT = 4;
-        public final int LEFTCOLUMN = 5;
-        public final int MIDCOLUMN = 6;
-        public final int RIGHTCOLUMN = 7;
-        public final int PARKING = 8;
-        public final int END = 9;
-        public final int JEWELDONE = 10;
+    // private enum State {
+    public final int START = 0;
+    public final int INITCAMERA = 1;
+    public final int CHECKJEWELS = 2;
+    public final int KNOCKJEWELLEFT = 3;
+    public final int KNOCKJEWELRIGHT = 4;
+    public final int DRIVETOFIRSTCOL = 11;
+    public final int LEFTCOLUMN = 5;
+    public final int MIDCOLUMN = 6;
+    public final int RIGHTCOLUMN = 7;
+    public final int PARKING = 8;
+    public final int END = 9;
+    public final int JEWELDONE = 10;
 
     //}
 
@@ -52,6 +53,7 @@ public abstract class AutoOp extends MechDrive {
     @Override
     public void init() {
         super.init();
+        this.msStuckDetectLoop = 30000;
 
         // Create parameters object to initialize Vuforia with
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -68,7 +70,7 @@ public abstract class AutoOp extends MechDrive {
         vuforia.setFrameQueueCapacity(10);
 
         relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-         relicTemplate = relicTrackables.get(0);
+        relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate");
 
         telemetry.addData(">", "Press Play to start");
@@ -271,6 +273,7 @@ public abstract class AutoOp extends MechDrive {
                 relicTrackables.activate();
                 deployArm();
                 state = CHECKJEWELS;
+
                 break;
 
             case INITCAMERA:
@@ -278,6 +281,9 @@ public abstract class AutoOp extends MechDrive {
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                     RobotLog.v("COLUMN IS: %s", vuMark);
                     relicTrackables.deactivate();
+                    stationaryIntake.setPower(1);
+                    sleep(1000);
+                    stationaryIntake.setPower(0);
                     state = CHECKJEWELS;
                 }
                 break;
@@ -355,12 +361,79 @@ public abstract class AutoOp extends MechDrive {
             case JEWELDONE:
                 verticalArm.setPosition(0.05);
                 horizontalArm.setPosition(.1);
+                trapizoidDrive(0,1,0, 400, .3);
+                sleep(300);
+                drive(0, 0, 0);
+
 //            switch (vuMark) {
 //                    case LEFT: state = LEFTCOLUMN; break;
 //                    case RIGHT: state = RIGHTCOLUMN; break;
 //                    case CENTER: state = MIDCOLUMN; break;
 //                }
-                state = PARKING;
+                state = DRIVETOFIRSTCOL;
+                break;
+            case DRIVETOFIRSTCOL:
+                drive(0, 0, 0);
+                BlockingQueue<VuforiaLocalizer.CloseableFrame> frameQueue2 = vuforia.getFrameQueue();
+                VuforiaLocalizer.CloseableFrame frame2;
+                int ct2 = 0;
+                whileLoop2:
+                while ((frame2 = frameQueue2.poll()) != null) {
+                    drive(0, 0, 0);
+                    ct2++;
+
+                    for (int i = 0; i < frame2.getNumImages(); i++) {
+                        Image img = frame2.getImage(i);
+                        RobotLog.v("Format %d, height %d, width %d", img.getFormat(), img.getHeight(), img.getWidth());
+                        if (img.getFormat() == PIXEL_FORMAT.GRAYSCALE) {
+                            continue;
+                        } else {
+                            Bitmap bitmap = Bitmap.createBitmap(img.getBufferWidth(), img.getBufferHeight(), Bitmap.Config.RGB_565);
+                            bitmap.copyPixelsFromBuffer(img.getPixels());
+
+                            int r = 0;
+                            int g = 0;
+                            int b = 0;
+                            double otherBlue = 0;
+                            double sumOfBlue = 0;
+                            for(int j = 0; j < bitmap.getHeight(); j++) {
+                                int color = bitmap.getPixel(j, bitmap.getWidth()/2);
+                                r += Color.red(color);
+                                g += Color.green(color);
+                                b += Color.blue(color);
+                                otherBlue += Color.blue(color)/Math.sqrt(Color.red(color) * Color.red(color) + Color.blue(color) * Color.blue(color) + 1);
+                                sumOfBlue += Color.blue(color)/Math.sqrt(Color.red(color) * Color.red(color) + Color.blue(color) * Color.blue(color) + 1) * j;
+
+                            }
+
+                            sumOfBlue /= otherBlue;
+
+                            r /= bitmap.getWidth();
+                            g /= bitmap.getWidth();
+                            b /= bitmap.getWidth();
+
+                            telemetry.addData("R", r);
+                            telemetry.addData("G", g);
+                            telemetry.addData("B", b);
+                            telemetry.addData("Width", bitmap.getWidth());
+                            telemetry.addData("Height", bitmap.getHeight());
+                            telemetry.addData("Center of blue", sumOfBlue);
+
+                            int centerH = bitmap.getHeight()/2;
+                            double power = 0;
+                            if(sumOfBlue - centerH > 10) {
+                                power = .3 * (sumOfBlue - centerH) / centerH + .1;
+                            } else if(sumOfBlue - centerH < -10) {
+                                power = .3 * (sumOfBlue - centerH) / centerH - .1;
+                            }
+                            telemetry.addData("Power", power);
+                            telemetry.update();
+                            drive(0, power, 0);
+
+                        }
+                    }
+                    frame2.close();
+                }
                 break;
             case LEFTCOLUMN:
                 leftColumn();
@@ -387,10 +460,10 @@ public abstract class AutoOp extends MechDrive {
             default: break;
         }
         vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                    RobotLog.v("COLUMN IS: %s", vuMark);
-                    relicTrackables.deactivate();
-                }
+        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+            RobotLog.v("COLUMN IS: %s", vuMark);
+            relicTrackables.deactivate();
+        }
         telemetry.addData("vuMark", vuMark);
         telemetry.update();
     }
@@ -440,3 +513,4 @@ public abstract class AutoOp extends MechDrive {
     public abstract boolean isBlueTeam();
 
 }
+

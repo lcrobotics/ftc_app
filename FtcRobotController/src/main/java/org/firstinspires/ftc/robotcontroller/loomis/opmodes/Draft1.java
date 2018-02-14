@@ -5,18 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class Draft1 extends MechDrive {
 
 
-    private int maxEncoder = 14000;
-    private int minEncoder = 100;
+    private int maxNegEncoder = -4800;
+    private int minNegEncoder = -100;
 
     @Override
     public void init() {
         super.init();
-//        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-//        frontRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-//        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-//        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         lift();
-
         verticalArm.setPosition(0);
         horizontalArm.setPosition(.1);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -87,11 +82,11 @@ public class Draft1 extends MechDrive {
 
         telemetry.addData("Y value", gamepad1.left_stick_y);
 
-        if(gamepad2.dpad_right && relicSlide.getCurrentPosition() < maxEncoder) {
+        if(gamepad2.dpad_right && relicSlide.getCurrentPosition() > maxNegEncoder) {
             slidePower = 1f;
         }
-        if(gamepad2.dpad_left && relicSlide.getCurrentPosition() > minEncoder) {
-            slidePower = -1f;
+        if(gamepad2.dpad_left && relicSlide.getCurrentPosition() < minNegEncoder) {
+            slidePower = -0.5f;
         }
 
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());

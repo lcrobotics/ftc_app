@@ -40,6 +40,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackBlueAutoOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackRedAutoOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BlueAutoOpP;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ColorFinder;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Draft1;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.FrontBlueRobotCode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.FrontRedRobotOp;
@@ -83,10 +84,8 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("Back Red Auto Park", BackRedAutoOp.class);
         manager.register("Front Blue Auto Park", FrontBlueRobotCode.class);
         manager.register("Front Red Auto Park", FrontRedRobotOp.class);
-        manager.register("TESTING WOAW VERY COOL VERY NICE", TestOp.class);
 
-        manager.register("Servo Test", ServoTestMode.class);
-
+        manager.register("Color Finder", ColorFinder.class);
     }
 
 }

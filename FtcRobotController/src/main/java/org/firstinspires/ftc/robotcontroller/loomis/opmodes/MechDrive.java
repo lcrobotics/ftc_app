@@ -31,7 +31,6 @@ public class MechDrive extends OpMode {
     Servo horizontalArm;
     Servo grabber;
 
-    ColorSensor colorSensor;
     double fast_speed = .4;
     double strafe_fast_speed = 0.8;
     double slow_speed = .2;
@@ -54,7 +53,6 @@ public class MechDrive extends OpMode {
         leftLift = hardwareMap.get(CRServo.class, "leftLift");
         rightLift = hardwareMap.get(CRServo.class, "rightLift");
         grabber = hardwareMap.get(Servo.class, "grabber");
-        colorSensor = hardwareMap.get(ColorSensor.class, "cs");
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -64,7 +62,7 @@ public class MechDrive extends OpMode {
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         grabberSetPosition(false);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        relicSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+        relicSlide.setDirection(DcMotorSimple.Direction.FORWARD);
       }
 
     public void drive(double x, double y, double w){
