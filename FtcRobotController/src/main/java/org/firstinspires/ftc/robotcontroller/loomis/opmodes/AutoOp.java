@@ -273,7 +273,12 @@ public abstract class AutoOp extends MechDrive {
                 relicTrackables.activate();
                 deployArm();
                 state = CHECKJEWELS;
-
+                lift();
+                stationaryIntake.setPower(1);
+                rotatingIntake.setPower(1);
+                sleep(1000);
+                stationaryIntake.setPower(0);
+                rotatingIntake.setPower(0);
                 break;
 
             case INITCAMERA:
@@ -281,9 +286,6 @@ public abstract class AutoOp extends MechDrive {
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                     RobotLog.v("COLUMN IS: %s", vuMark);
                     relicTrackables.deactivate();
-                    stationaryIntake.setPower(1);
-                    sleep(1000);
-                    stationaryIntake.setPower(0);
                     state = CHECKJEWELS;
                 }
                 break;
@@ -370,7 +372,7 @@ public abstract class AutoOp extends MechDrive {
 //                    case RIGHT: state = RIGHTCOLUMN; break;
 //                    case CENTER: state = MIDCOLUMN; break;
 //                }
-                state = DRIVETOFIRSTCOL;
+                state = PARKING;
                 break;
             case DRIVETOFIRSTCOL:
                 drive(0, 0, 0);
