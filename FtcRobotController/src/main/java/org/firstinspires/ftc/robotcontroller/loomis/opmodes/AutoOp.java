@@ -32,13 +32,14 @@ public abstract class AutoOp extends MechDrive {
     public final int CHECKJEWELS = 2;
     public final int KNOCKJEWELLEFT = 3;
     public final int KNOCKJEWELRIGHT = 4;
-    public final int DRIVETOFIRSTCOL = 11;
+    public final int DRIVETOFIRSTCOL = 12;
     public final int LEFTCOLUMN = 5;
     public final int MIDCOLUMN = 6;
     public final int RIGHTCOLUMN = 7;
-    public final int PARKING = 8;
-    public final int END = 9;
-    public final int JEWELDONE = 10;
+    public final int TAKINGINBLOCK = 8;
+    public final int PARKING = 9;
+    public final int END = 10;
+    public final int JEWELDONE = 11;
 
     //}
 
@@ -281,9 +282,6 @@ public abstract class AutoOp extends MechDrive {
                 if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                     RobotLog.v("COLUMN IS: %s", vuMark);
                     relicTrackables.deactivate();
-                    stationaryIntake.setPower(1);
-                    sleep(1000);
-                    stationaryIntake.setPower(0);
                     state = CHECKJEWELS;
                 }
                 break;
@@ -370,7 +368,19 @@ public abstract class AutoOp extends MechDrive {
 //                    case RIGHT: state = RIGHTCOLUMN; break;
 //                    case CENTER: state = MIDCOLUMN; break;
 //                }
-                state = DRIVETOFIRSTCOL;
+                state = TAKINGINBLOCK;
+                break;
+            case TAKINGINBLOCK:
+                lift();
+                sleep(9000);
+
+                stationaryIntake.setPower(1);
+                rotatingIntake.setPower(-1);
+                sleep(3000);
+                stationaryIntake.setPower(0);
+                rotatingIntake.setPower(0);
+
+                state = PARKING;
                 break;
             case DRIVETOFIRSTCOL:
                 drive(0, 0, 0);
@@ -453,8 +463,6 @@ public abstract class AutoOp extends MechDrive {
                 break;
             case END:
                 verticalArm.setPosition(0.25);
-                lift();
-                sleep(9000);
                 verticalArm.setPosition(0.0);
                 break;
             default: break;
