@@ -52,11 +52,20 @@ public class FrontBlueRobotCode extends AutoOp {
         drive(.3, 0, 0);
     }
     public void park() {
-        trapizoidDrive(0, .3, 0, 1359, .3);
-        trapizoidDrive(1, 0, 0, 200, .3);
+
         stationaryIntake.setPower(-1);
-        sleep(2000);
+        rotatingIntake.setPower(1);
+        trapizoidDrive(0, .3, 0, 1375, .3);
         stationaryIntake.setPower(0);
+        rotatingIntake.setPower(0);
+
+        trapizoidDrive(1, 0, 0, 125, .3);
+        stationaryIntake.setPower(1);
+        rotatingIntake.setPower(-1);
+        sleep(2000);
+        rotatingIntake.setPower(0);
+        stationaryIntake.setPower(0);
+        trapizoidDrive(0, -.3, 0, 100, .5);
 
     }
 
