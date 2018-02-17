@@ -57,6 +57,8 @@ public class TestOp extends AutoOp {
 
     }
 
+
+
     public void rightColumn() {
         off_the_balance();
         rotate90degrees();

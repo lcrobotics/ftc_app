@@ -77,15 +77,11 @@ public class FtcOpModeRegister implements OpModeRegister {
 
         manager.register("Tele. Op.", Draft1.class);
 
-        manager.register("Blue Auto.", BlueAutoOpP.class);
-        manager.register("Red Auto.", RedAutoOpP.class);
-
         manager.register("Back Blue Auto Park", BackBlueAutoOp.class);
         manager.register("Back Red Auto Park", BackRedAutoOp.class);
         manager.register("Front Blue Auto Park", FrontBlueRobotCode.class);
         manager.register("Front Red Auto Park", FrontRedRobotOp.class);
 
-        manager.register("Color Finder", ColorFinder.class);
     }
 
 }
