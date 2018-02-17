@@ -53,9 +53,22 @@ public class FrontRedRobotOp extends AutoOp {
         stop_wheels();
     }
     public void park() {
-        trapizoidDrive(0, -.3, 0, 1359, .3);
-        trapizoidDrive(1, 0, 0, 547, .1);
 
+        stationaryIntake.setPower(-1);
+        rotatingIntake.setPower(1);
+        trapizoidDrive(0, -.3, 0, 1375, .3);
+        stationaryIntake.setPower(0);
+        rotatingIntake.setPower(0);
+
+        trapizoidDrive(1, 0, 0, 125, .3);
+        stationaryIntake.setPower(-1);
+        rotatingIntake.setPower(1);
+        conveyor.setPower(1);
+        sleep(4000);
+        rotatingIntake.setPower(0);
+        stationaryIntake.setPower(0);
+        conveyor.setPower(0);
+        trapizoidDrive(0, -.3, 0, 100, .5);
     }
 
     public void rightColumn() {
