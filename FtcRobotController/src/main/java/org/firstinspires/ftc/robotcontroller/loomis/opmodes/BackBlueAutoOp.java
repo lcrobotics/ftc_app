@@ -27,7 +27,7 @@ public class BackBlueAutoOp extends AutoOp {
     }
 
     public void rotate90degrees(){
-        trapizoidDrive(0, 0, .35, 900, .5);
+        trapizoidDrive(0, 0, .35, 800, .5);
     }
 
 
@@ -68,7 +68,7 @@ public class BackBlueAutoOp extends AutoOp {
 
         stationaryIntake.setPower(-1);
         rotatingIntake.setPower(1);
-        trapizoidDrive(0, .3, 0, 1380, 0.3);
+        trapizoidDrive(0, .3, 0, 1420, 0.3);
         stationaryIntake.setPower(0);
         rotatingIntake.setPower(0);
 
@@ -85,7 +85,6 @@ public class BackBlueAutoOp extends AutoOp {
         trapizoidDrive(0,.3,0,125, 0.2);
         trapizoidDrive(0,-.3,0,125, 0.2);
 
-        trapizoidDrive(0, -.3, 0, 60, 0.2);
         stop_wheels();
     }
      public void blockPlacing() {
