@@ -82,8 +82,8 @@ public class BackBlueAutoOp extends AutoOp {
         stationaryIntake.setPower(0);
         rotatingIntake.setPower(0);
 
-        trapizoidDrive(0,.3,0,125, 0.2);
-        trapizoidDrive(0,-.3,0,125, 0.2);
+        trapizoidDrive(0,.3,0,135, 0.2);
+        trapizoidDrive(0,-.3,0,67, 0.2);
 
         stop_wheels();
     }
