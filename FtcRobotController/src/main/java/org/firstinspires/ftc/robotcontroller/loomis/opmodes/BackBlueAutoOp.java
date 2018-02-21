@@ -1,12 +1,5 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-
 /**
  * Created by peyto on 11/28/2017.
  */
@@ -45,7 +38,7 @@ public class BackBlueAutoOp extends AutoOp {
     }
 
 
-    public void park(RelicRecoveryVuMark column) {
+    public void park(ColumnToScore column) {
 
         stationaryIntake.setPower(-1);
         rotatingIntake.setPower(1);

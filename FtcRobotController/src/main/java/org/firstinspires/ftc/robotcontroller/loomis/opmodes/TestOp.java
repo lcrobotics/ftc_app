@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-
 /**
  * Created by Students on 1/29/2018.
  */
@@ -40,7 +38,7 @@ public class TestOp extends AutoOp {
     }
 
 
-    public void park(RelicRecoveryVuMark column) {
+    public void park(ColumnToScore column) {
        encoderDrive(500);
 
     }

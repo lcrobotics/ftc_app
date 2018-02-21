@@ -47,7 +47,7 @@ public abstract class AutoOp extends MechDrive {
     private VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
     public VuforiaTrackables relicTrackables;
-    public RelicRecoveryVuMark vuMark;
+    public ColumnToScore column;
 
 
     @Override
@@ -82,7 +82,7 @@ public abstract class AutoOp extends MechDrive {
     }
 
 
-    abstract void park(RelicRecoveryVuMark column);
+    abstract void park(ColumnToScore column);
 
     public void EncoderAveragingForward (int v){
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -258,7 +258,7 @@ public abstract class AutoOp extends MechDrive {
         sleep(250);
         horizontalArm.setPosition(.5);
         sleep(250);
-        verticalArm.setPosition(.8);
+        verticalArm.setPosition(.769);
     }
     @Override
     public void loop() {
@@ -267,14 +267,14 @@ public abstract class AutoOp extends MechDrive {
             case START:
                 relicTrackables.activate();
                 deployArm();
-                state = INITCAMERA;
+                state = CHECKJEWELS;
 
                 break;
 
             case INITCAMERA:
-                vuMark = RelicRecoveryVuMark.from(relicTemplate);
-                if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                    RobotLog.v("COLUMN IS: %s", vuMark);
+                column = ColumnToScore.from(RelicRecoveryVuMark.from(relicTemplate));
+                if (column != ColumnToScore.UNKNOWN) {
+                    RobotLog.v("COLUMN IS: %s", column);
                     relicTrackables.deactivate();
                     state = CHECKJEWELS;
                 }
@@ -425,7 +425,7 @@ public abstract class AutoOp extends MechDrive {
                 break;
 
             case PARKING:
-                park(vuMark);
+                park(column);
                 state = END;
                 break;
             case END:
@@ -433,12 +433,14 @@ public abstract class AutoOp extends MechDrive {
                 break;
             default: break;
         }
-        vuMark = RelicRecoveryVuMark.from(relicTemplate);
-        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-            RobotLog.v("COLUMN IS: %s", vuMark);
+        if (column ==  ColumnToScore.UNKNOWN) {
+            column = ColumnToScore.from(RelicRecoveryVuMark.from(relicTemplate));
+        }
+        if (column != ColumnToScore.UNKNOWN) {
+            RobotLog.v("COLUMN IS: %s", column);
             relicTrackables.deactivate();
         }
-        telemetry.addData("vuMark", vuMark);
+        telemetry.addData("column", column);
         telemetry.update();
     }
 
