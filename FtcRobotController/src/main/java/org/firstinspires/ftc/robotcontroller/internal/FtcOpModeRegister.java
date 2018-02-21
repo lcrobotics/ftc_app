@@ -34,19 +34,13 @@ package org.firstinspires.ftc.robotcontroller.internal;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
-
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
-
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackBlueAutoOp;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BackRedAutoOp;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.BlueAutoOpP;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ColorFinder;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.Draft1;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.FrontBlueRobotCode;
 import org.firstinspires.ftc.robotcontroller.loomis.opmodes.FrontRedRobotOp;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.RedAutoOpP;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.ServoTestMode;
-import org.firstinspires.ftc.robotcontroller.loomis.opmodes.TestOp;
+import org.firstinspires.ftc.robotcontroller.loomis.opmodes.RedFrontAltAutoOp;
 
 /**
  * {@link FtcOpModeRegister} is responsible for registering opmodes for use in an FTC game.
@@ -81,7 +75,7 @@ public class FtcOpModeRegister implements OpModeRegister {
         manager.register("Back Red Auto Park", BackRedAutoOp.class);
         manager.register("Front Blue Auto Park", FrontBlueRobotCode.class);
         manager.register("Front Red Auto Park", FrontRedRobotOp.class);
-
+        manager.register("ALT Red Front Auto Park", RedFrontAltAutoOp.class);
     }
 
 }

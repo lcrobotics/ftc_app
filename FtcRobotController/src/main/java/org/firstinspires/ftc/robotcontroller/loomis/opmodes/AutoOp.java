@@ -36,7 +36,6 @@ public abstract class AutoOp extends MechDrive {
     public final int LEFTCOLUMN = 5;
     public final int MIDCOLUMN = 6;
     public final int RIGHTCOLUMN = 7;
-    public final int TAKINGINBLOCK = 8;
     public final int PARKING = 9;
     public final int END = 10;
     public final int JEWELDONE = 11;
@@ -77,8 +76,8 @@ public abstract class AutoOp extends MechDrive {
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
 
-        verticalArm.setPosition(0);
-        horizontalArm.setPosition(.08);
+        verticalArm.setPosition(.03);
+        horizontalArm.setPosition(.09);
 
     }
 
@@ -268,7 +267,7 @@ public abstract class AutoOp extends MechDrive {
             case START:
                 relicTrackables.activate();
                 deployArm();
-                state = CHECKJEWELS;
+                state = INITCAMERA;
 
                 break;
 
@@ -352,25 +351,15 @@ public abstract class AutoOp extends MechDrive {
                 state = JEWELDONE;
                 break;
             case JEWELDONE:
-                verticalArm.setPosition(0.3);
-                horizontalArm.setPosition(.1);
+                verticalArm.setPosition(0.13);
+                horizontalArm.setPosition(.09);
                 sleep(300);
-
-//            switch (vuMark) {
-//                    case LEFT: state = LEFTCOLUMN; break;
-//                    case RIGHT: state = RIGHTCOLUMN; break;
-//                    case CENTER: state = MIDCOLUMN; break;
-//                }
-                state = TAKINGINBLOCK;
-                break;
-
-            case TAKINGINBLOCK:
                 lift();
                 sleep(6000);
-                verticalArm.setPosition(0.01);
+                verticalArm.setPosition(0.03);
                 state = PARKING;
                 break;
-                
+
             case DRIVETOFIRSTCOL:
                 drive(0, 0, 0);
                 BlockingQueue<VuforiaLocalizer.CloseableFrame> frameQueue2 = vuforia.getFrameQueue();

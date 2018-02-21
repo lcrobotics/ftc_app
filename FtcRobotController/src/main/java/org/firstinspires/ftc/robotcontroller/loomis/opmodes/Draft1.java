@@ -14,8 +14,8 @@ public class Draft1 extends MechDrive {
     public void init() {
         super.init();
         lift();
-        verticalArm.setPosition(0);
-        horizontalArm.setPosition(.1);
+        verticalArm.setPosition(.03);
+        horizontalArm.setPosition(.09);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
