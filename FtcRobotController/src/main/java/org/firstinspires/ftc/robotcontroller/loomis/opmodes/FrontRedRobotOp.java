@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 /**
  * Created by Students on 1/30/2018.
  */
@@ -37,34 +39,27 @@ public class FrontRedRobotOp extends AutoOp {
         drive(0, 0,0);
     }
 
-    public void leftColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(1);
-        stop_wheels();
+
+    public void park(RelicRecoveryVuMark column) {
+        stationaryIntake.setPower(-1);
+        rotatingIntake.setPower(1);
+        trapizoidDrive(0, -.3, 0, 1375, .3);
+        stationaryIntake.setPower(0);
+        rotatingIntake.setPower(0);
+
+        trapizoidDrive(1, 0, 0, 125, .3);
+        stationaryIntake.setPower(-1);
+        rotatingIntake.setPower(1);
+        conveyor.setPower(1);
+        sleep(4000);
+        rotatingIntake.setPower(0);
+        stationaryIntake.setPower(0);
+        conveyor.setPower(0);
+        trapizoidDrive(0, .3, 0, 100, .5);
+
     }
 
-    public void midColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(2);
-        stop_wheels();
-    }
-    public void park() {
-        trapizoidDrive(0, -.3, 0, 1359, .3);
-        trapizoidDrive(1, 0, 0, 547, .1);
 
-    }
-
-    public void rightColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(3);
-        stop_wheels();
-    }
     int count;
 
 

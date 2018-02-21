@@ -82,13 +82,8 @@ public abstract class AutoOp extends MechDrive {
 
     }
 
-    abstract void leftColumn();
 
-    abstract void midColumn();
-
-    abstract void rightColumn();
-
-    abstract void park();
+    abstract void park(RelicRecoveryVuMark column);
 
     public void EncoderAveragingForward (int v){
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -357,7 +352,7 @@ public abstract class AutoOp extends MechDrive {
                 state = JEWELDONE;
                 break;
             case JEWELDONE:
-                verticalArm.setPosition(0.05);
+                verticalArm.setPosition(0.3);
                 horizontalArm.setPosition(.1);
                 sleep(300);
 
@@ -372,6 +367,7 @@ public abstract class AutoOp extends MechDrive {
             case TAKINGINBLOCK:
                 lift();
                 sleep(6000);
+                verticalArm.setPosition(0.01);
                 state = PARKING;
                 break;
                 
@@ -438,20 +434,9 @@ public abstract class AutoOp extends MechDrive {
                     frame2.close();
                 }
                 break;
-            case LEFTCOLUMN:
-                leftColumn();
-                state = END;
-                break;
-            case MIDCOLUMN:
-                midColumn();
-                state = END;
-                break;
-            case RIGHTCOLUMN:
-                rightColumn();
-                state = END;
-                break;
+
             case PARKING:
-                park();
+                park(vuMark);
                 state = END;
                 break;
             case END:

@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 /**
  * Created by peyto on 11/28/2017.
  */
@@ -41,24 +43,7 @@ public class BackRedAutoOp extends AutoOp {
         trapizoidDrive(0, -.3, 0, 900, .5);
     }
 
-    public void leftColumn() {
-        forwardforcolumn( 1);
-        rotate90degrees();
-        drive(0, 0, 0);
-    }
-
-    public void midColumn() {
-        forwardforcolumn(2);
-        rotate90degrees();
-        drive(0, 0, 0);
-    }
-
-    public void rightColumn() {
-        forwardforcolumn(3);
-        rotate90degrees();
-        drive(0, 0, 0);
-    }
-    public void park(){
+    public void park(RelicRecoveryVuMark column){
         off_the_balance();
         stop_wheels();
     }

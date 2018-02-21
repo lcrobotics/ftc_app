@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 /**
  * Created by Students on 1/29/2018.
  */
@@ -37,35 +39,13 @@ public class TestOp extends AutoOp {
         drive(0, 0,0);
     }
 
-    public void leftColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(1);
-        stop_wheels();
-    }
 
-    public void midColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(2);
-        stop_wheels();
-    }
-    public void park() {
+    public void park(RelicRecoveryVuMark column) {
        encoderDrive(500);
 
     }
 
 
-
-    public void rightColumn() {
-        off_the_balance();
-        rotate90degrees();
-        positioning();
-        forwardforcolumn(3);
-        stop_wheels();
-    }
     int count;
 
 
