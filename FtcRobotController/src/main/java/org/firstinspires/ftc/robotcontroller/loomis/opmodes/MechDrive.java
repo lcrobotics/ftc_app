@@ -30,6 +30,7 @@ public class MechDrive extends OpMode {
     Servo verticalArm;
     Servo horizontalArm;
     Servo grabber;
+    Servo blockServo;
 
     double fast_speed = .4;
     double strafe_fast_speed = 0.8;
@@ -53,16 +54,18 @@ public class MechDrive extends OpMode {
         leftLift = hardwareMap.get(CRServo.class, "leftLift");
         rightLift = hardwareMap.get(CRServo.class, "rightLift");
         grabber = hardwareMap.get(Servo.class, "grabber");
+        blockServo = hardwareMap.get(Servo.class, "glyphEjector");
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
-        verticalArm = hardwareMap.servo.get("1");
-        horizontalArm = hardwareMap.servo.get("2");
+        verticalArm = hardwareMap.servo.get("verticalArm");
+        horizontalArm = hardwareMap.servo.get("horizontalArm");
         stationaryIntake.setDirection(DcMotorSimple.Direction.REVERSE);
         grabberSetPosition(false);
         relicSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         relicSlide.setDirection(DcMotorSimple.Direction.FORWARD);
+        blockServo.setPosition(1);
       }
 
     public void drive(double x, double y, double w){
@@ -97,7 +100,7 @@ public class MechDrive extends OpMode {
         isGrabberOpen ^= true;
         grabberSetPosition(isGrabberOpen);
     }
-    public void processGamepad1A (){
+    public void processGamepad2A (){
         if (gamepad2.a && !toggledlastloop){
             toggle();
         }
