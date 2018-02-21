@@ -9,6 +9,7 @@ import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
 
+import org.firstinspires.ftc.robotcontroller.internal.ColumnToScore;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -47,7 +48,7 @@ public abstract class AutoOp extends MechDrive {
     private VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
     public VuforiaTrackables relicTrackables;
-    public ColumnToScore column;
+    public ColumnToScore column = ColumnToScore.UNKNOWN;
 
 
     @Override
@@ -440,7 +441,7 @@ public abstract class AutoOp extends MechDrive {
             RobotLog.v("COLUMN IS: %s", column);
             relicTrackables.deactivate();
         }
-        telemetry.addData("column", column);
+        telemetry.addData("column", column.toString());
         telemetry.update();
     }
 

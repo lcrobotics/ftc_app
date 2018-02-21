@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import org.firstinspires.ftc.robotcontroller.internal.ColumnToScore;
+
 /**
  * Created by peyto on 11/28/2017.
  */

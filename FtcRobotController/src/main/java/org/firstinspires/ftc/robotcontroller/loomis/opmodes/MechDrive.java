@@ -132,7 +132,7 @@ public class MechDrive extends OpMode {
 
     public void lift(){
         leftLift.setPower(.3);
-        rightLift.setPower(.79);
+        rightLift.setPower(.81);
     }
     public void sleep (int sleeptime) {
         try {

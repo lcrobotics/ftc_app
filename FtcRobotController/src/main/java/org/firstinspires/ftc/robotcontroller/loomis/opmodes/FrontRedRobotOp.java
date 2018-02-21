@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import org.firstinspires.ftc.robotcontroller.internal.ColumnToScore;
+
 /**
  * Created by Students on 1/30/2018.
  */
@@ -42,19 +44,13 @@ public class FrontRedRobotOp extends AutoOp {
 
 
     public void park(ColumnToScore column) {
-        stationaryIntake.setPower(-1);
-        rotatingIntake.setPower(1);
-        trapizoidDrive(0, -.3, 0, 1575, .5);
+        trapizoidDrive(0, -.3, 0, 1475, .5);
+        conveyor.setPower(-1);
         trapizoidDrive(0, .3, 0, 100, .3);
-        trapizoidDrive(0, 0, .5, 200, .5);
-        trapizoidDrive(0, -.3, 0, 600, .5);
-        stationaryIntake.setPower(0);
-        rotatingIntake.setPower(0);
-        trapizoidDrive(0, .3, 0, 100, .3);
-        trapizoidDrive(1, 0, 0, 125, .3);
-        stationaryIntake.setPower(1);
-        rotatingIntake.setPower(-1);
-        trapizoidDrive(0, .3, 0, 100, .3);
+        sleep(1000);
+        trapizoidDrive(0, -.3, 0, 175, .5);
+        trapizoidDrive(0, .3, 0, 60, .3);
+        conveyor.setPower(0);
     }
 
         @Override

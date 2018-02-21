@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
+package org.firstinspires.ftc.robotcontroller.internal;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
@@ -23,6 +23,20 @@ public enum ColumnToScore {
                 return CENTER;
             default:
                 return UNKNOWN;
+        }
+    }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case LEFT:
+                return "LEFT";
+            case RIGHT:
+                return "RIGHT";
+            case CENTER:
+                return "CENTER";
+            default:
+                return "UNKNOWN";
         }
     }
 }
