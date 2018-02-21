@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.robotcontroller.loomis.opmodes;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Draft1 extends MechDrive {
 
@@ -89,6 +91,14 @@ public class Draft1 extends MechDrive {
             slidePower = -0.5f;
         }
 
+        if(gamepad2.b) {
+            blockServo.setPosition(.39);
+        }
+        else {
+            blockServo.setPosition(1);
+        }
+
+        telemetry.addData("Block", blockServo.getPosition());
         telemetry.addData("Linear Slide", relicSlide.getCurrentPosition());
 
         drive(x,y,w);
@@ -102,7 +112,7 @@ public class Draft1 extends MechDrive {
         telemetry.addData("LeftLiftPos", leftLift.getPower());
         telemetry.addData("RightLiftPos", rightLift.getPower());
 
-        processGamepad1A();
+        processGamepad2A();
         relicSlide.setPower(slidePower);
     }
 }
