@@ -18,37 +18,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.concurrent.BlockingQueue;
 
-/**
- * Created by Students on 11/29/2017.
- */
-
 public abstract class AutoOp extends MechDrive {
 
 
     public int state = 0;
 
-    // private enum State {
-    public final int START = 0;
-    public final int INITCAMERA = 1;
-    public final int CHECKJEWELS = 2;
-    public final int KNOCKJEWELLEFT = 3;
-    public final int KNOCKJEWELRIGHT = 4;
-    public final int DRIVETOFIRSTCOL = 12;
-    public final int LEFTCOLUMN = 5;
-    public final int MIDCOLUMN = 6;
-    public final int RIGHTCOLUMN = 7;
-    public final int PARKING = 9;
-    public final int END = 10;
-    public final int JEWELDONE = 11;
+    private final int START = 0;
+    private final int INITCAMERA = 1;
+    private final int CHECKJEWELS = 2;
+    private final int KNOCKJEWELLEFT = 3;
+    private final int KNOCKJEWELRIGHT = 4;
+    private final int DRIVETOFIRSTCOL = 12;
+    private final int PARKING = 9;
+    private final int END = 10;
+    private final int JEWELDONE = 11;
 
-    //}
-
-    public boolean leftRed;
+    private boolean leftRed;
 
     private VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
-    public VuforiaTrackables relicTrackables;
-    public ColumnToScore column = ColumnToScore.UNKNOWN;
+    private VuforiaTrackables relicTrackables;
+    private ColumnToScore column = ColumnToScore.UNKNOWN;
 
 
     @Override
@@ -321,19 +311,6 @@ public abstract class AutoOp extends MechDrive {
                             }
                             frame.close();
                             break whileLoop;
-                            /*if (Color.blue(colorA) > 120) {
-                                telemetry.addLine("Blue Ball");
-                                RobotLog.v("The ball is BLUE");
-                                leftIsBlue = true;
-                                if(isBlueTeam()) {
-                                    state = KNOCKJEWELLEFT;
-                                }
-                                else state = KNOCKJEWELRIGHT;
-                            }*/
-
-
-                            //  telemetry.addData("Length of points is ", points.length);
-                            //telemetry.update();
                         }
                     }
                     frame.close();
@@ -430,7 +407,7 @@ public abstract class AutoOp extends MechDrive {
                 state = END;
                 break;
             case END:
-                verticalArm.setPosition(0.25);
+                verticalArm.setPosition(0.03);
                 break;
             default: break;
         }

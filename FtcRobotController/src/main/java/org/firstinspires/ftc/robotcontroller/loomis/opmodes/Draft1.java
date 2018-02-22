@@ -23,8 +23,6 @@ public class Draft1 extends MechDrive {
     @Override
     public void loop() {
 
-        float slidePower = 0f;
-
         // What speed to go forward at
         if ((gamepad1.right_trigger  > 0.05 || gamepad2.right_trigger > 0.05) && (!gamepad1.right_bumper)) {
             rotatingIntake.setPower(1);
@@ -44,16 +42,10 @@ public class Draft1 extends MechDrive {
         }
 
 
-        if (gamepad2.dpad_up) conveyor.setPower(.3);
-        else if (gamepad2.dpad_down) conveyor.setPower(-.3);
-        else conveyor.setPower(gamepad2.left_stick_y);
+        conveyor.setPower(gamepad2.left_stick_y);
 
 
 
-        //main drive (Strafe) (Right Joystick)
-//        double w = -gamepad1.right_stick_x * fast_speed;
-//        double y = ((-gamepad1.left_stick_y * fast_speed) + dy);
-//        double x = ((gamepad1.left_stick_x * fast_speed) + dx);
         double dy = (gamepad1.dpad_down ? -slow_speed : 0) + (gamepad1.dpad_up ? slow_speed : 0);
         double dx = (gamepad1.dpad_left ? -strafe_slow_speed : 0) + (gamepad1.dpad_right ? strafe_slow_speed : 0);
         double w;
@@ -78,18 +70,28 @@ public class Draft1 extends MechDrive {
             y *= fast_speed;
             x *= strafe_fast_speed;
         }
-            y += dy;
-            x += dx;
+        y += dy;
+        x += dx;
 
 
         telemetry.addData("Y value", gamepad1.left_stick_y);
 
-        if(gamepad2.dpad_right && relicSlide.getCurrentPosition() > maxNegEncoder) {
-            slidePower = 1f;
+        float slidePower = 0f;
+
+        if (relicSlide.getCurrentPosition() > maxNegEncoder) {
+            if (gamepad2.dpad_right) {
+                slidePower = 1f;
+            } else if (gamepad2.dpad_up) {
+                slidePower = 0.5f;
+            }
         }
-        if(gamepad2.dpad_left && relicSlide.getCurrentPosition() < minNegEncoder) {
-            slidePower = -0.5f;
+        if (relicSlide.getCurrentPosition() < minNegEncoder) {
+            if (gamepad2.dpad_left || gamepad2.dpad_down) {
+                slidePower = -0.5f;
+            }
         }
+
+        telemetry.addData("SlidePower", slidePower);
 
         if(gamepad2.b) {
             blockServo.setPosition(.39);
